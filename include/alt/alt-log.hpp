@@ -130,20 +130,20 @@ namespace alt
 		} Raw{};
 
 		static constexpr struct Log_Info : public Log_Base {
-			Log& Begin() const override { return Instance().Put(White, Time, " "); }
+			Log& Begin() const override { return Instance().Put(LWhite, Time, " "); }
 		} Info{};
 
 		static constexpr struct Log_Warning : public Log_Base {
-			Log& Begin() const override { return Instance().Put(LYellow, Time, "[Warning] "); }
+			Log& Begin() const override { return Instance().Put(LYellow, Time, " [Warning] "); }
 		} Warning{};
 
 		static constexpr struct Log_Error : public Log_Base {
-			Log& Begin() const override { return Instance().Put(Red, Time, "[Error] "); }
+			Log& Begin() const override { return Instance().Put(Red, Time, " [Error] "); }
 		} Error{};
 
 		static constexpr struct Log_Debug : public Log_Base {
 		private:
-			Log& Begin() const override { return Instance().Put(LBLUE, Time, "[Debug] "); }
+			Log& Begin() const override { return Instance().Put(LCyan, Time, " [Debug] "); }
 		} Debug{};
 
 
@@ -155,20 +155,20 @@ namespace alt
 		} Raw{};
 
 		static constexpr struct Log_Info : public Log_Base {
-			Log& Begin() const override { return Instance().Put(White, Time, " "); }
+			Log& Begin() const override { return Instance().Put(LWhite, Time, " "); }
 		} Info{};
 
 		static constexpr struct Log_Warning : public Log_Base {
-			Log& Begin() const override { return Instance().Put(LYellow, Time, "[Warning] "); }
+			Log& Begin() const override { return Instance().Put(LYellow, Time, " [Warning] "); }
 		} Warning{};
 
 		static constexpr struct Log_Error : public Log_Base {
-			Log& Begin() const override { return Instance().Put(Red, Time, "[Error] "); }
+			Log& Begin() const override { return Instance().Put(Red, Time, " [Error] "); }
 		} Error{};
 
 		static constexpr struct Log_Debug : public Log_Base {
 		private:
-			Log& Begin() const override { return Instance().Put(LBLUE, Time, "[Debug] "); }
+			Log& Begin() const override { return Instance().Put(LCyan, Time, " [Debug] "); }
 		} Debug{};
 
 #define ALT_LOG_IMPL \

@@ -18,4 +18,11 @@
 #include "alt/alt-log.hpp"
 using namespace alt;
 
+//ragemp
+#include "ragemp/game.hpp"
+
+//gta
+#include "gta/game.hpp"
+
 #include "singleton.hpp"
+#include "xor.hpp"
