@@ -15,7 +15,7 @@
 #include "nlohmann/json.hpp"
 
 //alt
-#include "alt/alt-log.h"
+#include "alt/alt-log.hpp"
 using namespace alt;
 
 #include "singleton.hpp"
