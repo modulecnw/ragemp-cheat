@@ -17,6 +17,13 @@ DWORD WINAPI startThread(LPVOID lParameter)
 		std::this_thread::yield();
 	}
 
+	Nemo::Instance().Shutdown();
+
+	fclose(stdin);
+	fclose(stdout);
+
+	FreeConsole();
+
 	FreeLibraryAndExitThread(module, 0);
 
 	return TRUE;

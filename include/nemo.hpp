@@ -12,4 +12,5 @@ public:
 
 
     void Run(HMODULE hModule);
+    void Shutdown();
 };
