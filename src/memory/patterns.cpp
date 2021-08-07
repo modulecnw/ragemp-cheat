@@ -4,7 +4,7 @@ void Patterns::Initialize() {
     Log::Warning(_xor_("[+] Patterns >> Initializing gta patterns..."));
 
     /* patterns gta */
-    this->pattern_gta_swapchain = _xor_("48 8B 05 ? ? ? ? C3 48 8B C1 8D 4A 0E").c_str();
+    this->pattern_gta_swapchain = _xor_("48 8B 05 ? ? ? ? C3 48 8B C1 8D 4A 0E");
     this->pattern_gta_world = _xor_("48 8B 05 ? ? ? ? 48 8B 58 08 48 85 DB 74 32");
     this->pattern_gta_viewport = _xor_("48 8B 15 ? ? ? ? 48 8D 2D ? ? ? ? 48 8B CD");
 
