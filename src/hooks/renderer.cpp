@@ -3,6 +3,7 @@
 #include "memory/memory.hpp"
 #include "utils.hpp"
 #include "gui/gui.hpp"
+#include "gui/client.hpp"
 
 /* FONTS */
 #include "fonts/font_itcavantgarde.hpp"
@@ -81,9 +82,7 @@ void Renderer::Render(IDXGISwapChain* this_swapchain_pointer, unsigned int sync_
 
 	if (Memory::Instance().ptr_gta_world != nullptr) {
 		// client render
-		ImGuiWindow* window = ImGui::GetCurrentWindow();
-
-		window->DrawList->AddText(Fonts::Instance().fITCAvant18, 18.f, ImVec2(15, 15), ImColor(255,255,255), "nemo:V");
+		Client::Instance().Render();
 	}
 	
 
