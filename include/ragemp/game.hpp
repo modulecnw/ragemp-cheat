@@ -5,7 +5,7 @@ class CPedLink
 {
 public:
     char pad_0x0000[0x18]; //0x0000
-    //CObject* pPed; //0x0018 
+    CObject* pPed; //0x0018 
     char pad_0x0020[0x28]; //0x0020
 }; //Size=0x0048
 
