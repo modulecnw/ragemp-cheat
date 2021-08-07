@@ -17,8 +17,6 @@ using Vehicle = unsigned int;
 using Hash = unsigned int;
 using Cam = unsigned int;
 
-typedef void(__fastcall* game_tick_t)(__int64 a1, __int64 a2, __int64 a3);
-typedef __int64(__fastcall* newstring_t)(__int64* a1, __int64 a2, __int64 a3, __int64 a4, int a5);
 
 enum class MultiplayerFrameworks {
 	RAGEMP_037,
@@ -103,6 +101,19 @@ struct Vector3
 	}
 
 
+};
+
+struct Vector2
+{
+	float x;
+	float y;
+
+	Vector2() {}
+	Vector2(float _x, float _y)
+	{
+		x = _x;
+		y = _y;
+	}
 };
 
 struct Vector4

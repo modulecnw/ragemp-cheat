@@ -1,12 +1,11 @@
 #include "imports.hpp"
 #include "nemo.hpp"
 
+HMODULE g_hModule = nullptr;
 DWORD WINAPI startThread(LPVOID lParameter)
 {
-	Log::Push(new Log::ConsoleStream);
-
-	auto module = (HMODULE)lParameter;
-	Nemo::Instance().Run(module);
+	Log::Push(new Log::ConsoleStream());
+	Nemo::Instance().Run(g_hModule);
 
 	while (true)
 	{
@@ -24,21 +23,23 @@ DWORD WINAPI startThread(LPVOID lParameter)
 
 	FreeConsole();
 
-	FreeLibraryAndExitThread(module, 0);
+	FreeLibraryAndExitThread(g_hModule, 0);
 
 	return TRUE;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
 	if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
-		
+
+		g_hModule = hModule;
 		AllocConsole();
+
 		SetConsoleTitleA("NEMO | Developer-Output Console");
 
 		freopen_s((FILE**)stdin, "conin$", "r", stdin);
 		freopen_s((FILE**)stdout, "conout$", "w", stdout);
 
-		CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)startThread, hModule, 0, nullptr);
+		CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)startThread, nullptr, 0, nullptr);
 	}
 
 	return TRUE;

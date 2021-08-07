@@ -66,15 +66,12 @@ namespace memory
 		auto base = mod.base();
 		for (size_t i = 0; i < mod.size(); i++)
 			if (correlate(reinterpret_cast<uint8_t*>(base + i), data, length)) {
-
-				Log::Debug("[+] Memory >>", name, (base + i + offset));
+				Log::Debug(_xor_("[+] Memory >>"), name, (base + i + offset));
 				return (type)(base + i + offset);
 			}
 
-		Log::Error("Failed to find signature pattern", name);
-
-		return {};
-
+		Log::Error(_xor_("Failed to find signature pattern"), name);
+		return (type)(nullptr);
 	}
 
 	template <typename type>

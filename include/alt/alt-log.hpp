@@ -8,10 +8,7 @@
 #include <vector>
 #include <memory>
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#endif
+#define ALT_LOG_IMPL
 
 namespace alt
 {
@@ -30,7 +27,7 @@ namespace alt
 			WHITE, LWHITE
 		};
 
-		using StdStreamManip = std::ostream&(*)(std::ostream&);
+		using StdStreamManip = std::ostream& (*)(std::ostream&);
 		using LogManip = Log & (*)(Log&);
 
 		Log& Write(const std::string& val)
@@ -44,7 +41,7 @@ namespace alt
 		template<class T>
 		Log& Put(const T& val)
 		{
-			(*static_cast<std::ostream*>(this)) << val;
+			std::cout << val;
 			return *this;
 		}
 
@@ -60,7 +57,7 @@ namespace alt
 
 		Log& Put(StdStreamManip val)
 		{
-			(*static_cast<std::ostream*>(this)) << val;
+			std::cout << val;
 			return *this;
 		}
 
@@ -79,7 +76,7 @@ namespace alt
 		Log& PutTime()
 		{
 			const time_t t = time(nullptr);
-			(*static_cast<std::ostream*>(this)) << std::put_time(localtime(&t), "[%H:%M:%S]") << std::flush;
+			std::cout << std::put_time(localtime(&t), "[%H:%M:%S]") << std::flush;
 			return *this;
 		}
 
@@ -124,7 +121,6 @@ namespace alt
 			template<class T> Log& operator<<(const T& val) const { return Begin().Put<T>(val); }
 		};
 
-#if __cpp_constexpr >= 201603L
 		static constexpr struct Log_Raw : public Log_Base {
 			Log& Begin() const override { return Instance(); }
 		} Raw{};
@@ -145,40 +141,6 @@ namespace alt
 		private:
 			Log& Begin() const override { return Instance().Put(LCyan, Time, " [Debug] "); }
 		} Debug{};
-
-
-#define ALT_LOG_IMPL
-
-#else
-		static constexpr struct Log_Raw : public Log_Base {
-			Log& Begin() const override { return Instance(); }
-		} Raw{};
-
-		static constexpr struct Log_Info : public Log_Base {
-			Log& Begin() const override { return Instance().Put(LWhite, Time, " "); }
-		} Info{};
-
-		static constexpr struct Log_Warning : public Log_Base {
-			Log& Begin() const override { return Instance().Put(LYellow, Time, " [Warning] "); }
-		} Warning{};
-
-		static constexpr struct Log_Error : public Log_Base {
-			Log& Begin() const override { return Instance().Put(Red, Time, " [Error] "); }
-		} Error{};
-
-		static constexpr struct Log_Debug : public Log_Base {
-		private:
-			Log& Begin() const override { return Instance().Put(LCyan, Time, " [Debug] "); }
-		} Debug{};
-
-#define ALT_LOG_IMPL \
-	::alt::Log::Log_Raw alt::Log::Raw; \
-	::alt::Log::Log_Info alt::Log::Info; \
-	::alt::Log::Log_Warning alt::Log::Warning; \
-	::alt::Log::Log_Error alt::Log::Error; \
-	::alt::Log::Log_Debug alt::Log::Debug;
-
-#endif // __cpp_constexpr
 
 		static Log& Instance() noexcept
 		{
@@ -202,12 +164,7 @@ namespace alt
 		public:
 			Stream& Put(const std::string& val) override
 			{
-#ifdef _WIN32
-				static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-				WriteConsoleA(hConsole, val.data(), val.size(), NULL, NULL);
-#else
 				std::cout << val;
-#endif // _WIN32
 
 				return *this;
 			}
@@ -269,8 +226,7 @@ namespace alt
 					break;
 				}
 
-				static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-				SetConsoleTextAttribute(hConsole, col);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), col);
 #else
 				switch (val)
 				{
@@ -341,7 +297,7 @@ namespace alt
 
 			Stream& Put(const std::string& val) override
 			{
-				file << val << std::flush;
+				//file << val << std::flush;
 				return *this;
 			}
 
