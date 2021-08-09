@@ -193,7 +193,7 @@ namespace native
 		inline nsdk::native_handler_t find_native_handler(uint64_t hash)
 		{
 			if (auto eax = native::maps::mapper::get()[hash])
-				return (nsdk::native_handler_t)Memory::Instance().ptr_rage037_ragemp_fetch_handler(eax);
+				return (nsdk::native_handler_t)Memory::Instance().ptr_rageshared_fetch_handler(eax);
 
 			return nullptr;
 		}

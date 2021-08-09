@@ -22,5 +22,6 @@ void Patterns::Initialize() {
     this->pattern_rage037_get_name = _xor_("0F B7 C2 48 C1 E0 05");
     this->pattern_rage037_get_name_verify = _xor_("48 83 EC 38 48 C7 44 24 ? ? ? ? ? 48 8B 05 ? ? ? ? 48 85 C0 75 1B 8D 48 08");
     
+    /* patterns rageshared */
     this->pattern_rageshared_fetch_handler = _xor_("E8 ? ? ? ? 48 89 05 ? ? ? ? 48 8D 0D ? ? ? ? E8 ? ? ? ? E9 ? ? ? ?");
 }

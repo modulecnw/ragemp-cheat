@@ -22,7 +22,6 @@ public:
     string pattern_rage037_nametags_setter;
     string pattern_rage037_get_name;
     string pattern_rage037_get_name_verify;
-    string pattern_rageshared_fetch_handler;
 
     /* patterns rage11 */
 
