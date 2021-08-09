@@ -14,8 +14,8 @@ LRESULT Wndproc::call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w,
 			Gui::Instance().bMenuOpen ^= 1;
 		}
 
-		/* VEHICLE STEALER, need to be ported into hack module*/
-		if (param_w == VK_NUMPAD1) {
+		/* VEHICLE STEALER, need to be ported into hack module */
+		/*if (param_w == VK_NUMPAD1) {
 			tick::thread_invoker::queue([=]
 				{
 					auto ped = native::player::player_ped_id();
@@ -74,7 +74,7 @@ LRESULT Wndproc::call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w,
 					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), savedPos.x, savedPos.y, savedPos.z + 1.f);
 				}
 			);
-		}
+		}*/
 	}
 
 	if (ImGui::GetIO().MouseDrawCursor)
