@@ -7,16 +7,37 @@ using namespace std;
 class Memory : public Singleton<Memory>
 {
 public:
-    memory::module_t gta5_module = memory::module_t(nullptr);
-    memory::module_t ragemp_module = memory::module_t(nullptr);
+	/* typedefs*/
+	using script_thread_tick_t = uintptr_t(*)(game_thread* thread, int ops_to_execute);
+	using fix_context_vector_t = void(*)(void* context);
+	using fetch_native_handler_t = void* (*)(uintptr_t* table, uint64_t hash);
+	using ragemp_fetch_handler_t = uintptr_t(*)(uintptr_t hash);
 
-    MultiplayerFrameworks multiplayer_framework = MultiplayerFrameworks::RAGEMP_037;
+	using world_to_screen_t = bool(*)(Vector3* coords, float* x, float* y);
+	using get_bone_position_t = void(*)(int32_t* ped, __m128* pos, int32_t bone);
 
-    IDXGISwapChain* ptr_gta_swapchain = nullptr;
-    CWorld* ptr_gta_world = nullptr;
-    CViewPort* ptr_gta_viewport = nullptr;
+	using get_name_verify_t = DWORD64*(*)();
+	using get_rage_name_t = __int64(*)(DWORD64* thisptr, WORD a2);
 
-    CRagePool* ptr_rage037_pool = nullptr;
+	memory::module_t gta5_module = memory::module_t(nullptr);
+	memory::module_t ragemp_module = memory::module_t(nullptr);
 
-    void Initialize();
+	MultiplayerFrameworks multiplayer_framework = MultiplayerFrameworks::RAGEMP_037;
+
+	IDXGISwapChain* ptr_gta_swapchain = nullptr;
+	CWorld* ptr_gta_world = nullptr;
+	CViewPort* ptr_gta_viewport = nullptr;
+	world_to_screen_t ptr_gta_world_to_screen = nullptr;
+	get_bone_position_t ptr_gta_get_bone_position = nullptr;
+	script_thread_tick_t ptr_gta_script_thread_tick = nullptr;
+	fix_context_vector_t ptr_gta_fix_context_vector = nullptr;
+	fetch_native_handler_t ptr_gta_fetch_native_handler = nullptr;
+	uintptr_t* ptr_gta_native_handler_table = 0;
+
+	CRagePool* ptr_rage037_pool = nullptr;
+	get_name_verify_t ptr_rage037_get_name_verify = nullptr;
+	get_rage_name_t ptr_rage037_get_rage_name = nullptr;
+	ragemp_fetch_handler_t ptr_rage037_ragemp_fetch_handler = nullptr;
+
+	void Initialize();
 };

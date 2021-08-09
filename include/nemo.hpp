@@ -9,6 +9,8 @@ class Nemo : public Singleton<Nemo>
 public:
     HMODULE hModule = nullptr;
     HWND hWindow = nullptr;
+    WNDPROC wWndproc = nullptr;
+
     Vector2 vScreen = Vector2(1920, 1080);
     string sProcessName = "RAGE Multiplayer";
 

@@ -10,12 +10,19 @@ public:
     string pattern_gta_swapchain;
     string pattern_gta_world;
     string pattern_gta_viewport;
+    string pattern_gta_world_to_screen;
+    string pattern_gta_get_bone_position;
+    string pattern_gta_script_thread_tick;
+    string pattern_gta_fix_context_vector;
+    string pattern_gta_fetch_native_handler;
+    string pattern_gta_native_handler_table;
 
     /* patterns rage037 */
     string pattern_rage037_replayinterface;
     string pattern_rage037_nametags_setter;
     string pattern_rage037_get_name;
     string pattern_rage037_get_name_verify;
+    string pattern_rage037_ragemp_fetch_handler;
 
     /* patterns rage11 */
 

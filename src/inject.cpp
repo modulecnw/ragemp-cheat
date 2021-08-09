@@ -9,7 +9,7 @@ DWORD WINAPI startThread(LPVOID lParameter)
 
 	while (true)
 	{
-		if (GetAsyncKeyState(VK_END) & 0x8000)
+		if (GetAsyncKeyState(VK_PRIOR) & 0x8000)
 			break;
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));

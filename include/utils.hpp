@@ -30,31 +30,47 @@ namespace utils
 	}
 
 	namespace render {
+		static bool isInScreen(const ImVec2& from, const ImVec2& to) {
+			if ((from.x >= 0) && (from.x <= (Nemo::Instance().vScreen.x)) & (from.y >= 0) & (from.y <= (Nemo::Instance().vScreen.y)))
+			{
+				if ((to.x >= 0) & (to.x <= (Nemo::Instance().vScreen.x)) & (to.y >= 0) & (to.y <= (Nemo::Instance().vScreen.y)))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 
 		static auto draw_line = [](float x, float y, float x2, float y2, float r, float g, float b, float a, float thickness = 1.0f)
 		{
-			//if (!is_in_screen(ImVec2(x, y), ImVec2(x2, y2))) return;
-			ImGui::GetOverlayDrawList()->AddLine({ x, y }, { x2, y2 }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), thickness);
+			if (isInScreen({ x, y }, { x2, y2 }))
+				ImGui::GetOverlayDrawList()->AddLine({ x, y }, { x2, y2 }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), thickness);
 		};
 
 		static auto draw_filled_rect = [](float x, float y, float x2, float y2, float r, float g, float b, float a, float rounding = 0.0f)
 		{
-			//if (!is_in_screen(ImVec2(x, y), ImVec2(x2, y2))) return;
-			ImGui::GetOverlayDrawList()->AddRectFilled({ x, y }, { x2, y2 }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), rounding);
+			if (isInScreen({ x, y }, { x2, y2 }))
+
+				ImGui::GetOverlayDrawList()->AddRectFilled({ x, y }, { x2, y2 }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), rounding);
+		};
+
+		static auto draw_filled_circle = [](float x, float y, float radius, float r = 255, float g = 255, float b = 255, float a = 255)
+		{
+			if (isInScreen({ x, y }, { x + radius, y + radius }))
+				ImGui::GetOverlayDrawList()->AddCircleFilled({ x, y }, radius, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255 }));
 		};
 
 		static auto draw_rect = [](float x, float y, float x2, float y2, float r, float g, float b, float a, float rounding = 0.0f)
 		{
-			//if (!is_in_screen(ImVec2(x, y), ImVec2(x2, y2))) return;
-			ImGui::GetOverlayDrawList()->AddRect({ x, y }, { x2, y2 }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), rounding);
+			if (isInScreen({ x, y }, { x2, y2 }))
+				ImGui::GetOverlayDrawList()->AddRect({ x, y }, { x2, y2 }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), rounding);
 		};
 
-		static auto draw_text = [](float x, float y, std::string_view string, float size = 18.f, float r = 255, float g = 255, float b = 255, float a = 255)
+		static auto draw_text = [](float x, float y, std::string_view string, float size = 14.f, float r = 255, float g = 255, float b = 255, float a = 255)
 		{
-			//if (!is_in_screen(ImVec2(x, y), ImVec2(x, y))) return;
 			//TODO: add font resizing
-
-			ImGui::GetOverlayDrawList()->AddText({ x, y }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), string.data());
+			if (isInScreen({ x, y }, { x + size, y + size }))
+				ImGui::GetOverlayDrawList()->AddText({ x, y }, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255, }), string.data());
 		};
 	}
 

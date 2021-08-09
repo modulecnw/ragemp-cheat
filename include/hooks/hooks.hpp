@@ -10,8 +10,10 @@ class Hooks : public Singleton<Hooks>
 {
 private:
     void Render();
+    void Thread();
 public:
     std::unique_ptr<hooks::virtual_table_hook> vthDirectHook;
+    Memory::script_thread_tick_t original_native_thread = nullptr;
 
     void Initialize();
 };

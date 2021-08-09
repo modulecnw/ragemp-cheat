@@ -2,12 +2,16 @@
 #include "imports.hpp"
 #include "hack.hpp"
 
-#define RAGEMP
 using namespace std;
 
 class VisualsPlayer : public Singleton<VisualsPlayer>, Hack
 {
 public:
+    struct vector3_active_assignment {
+        Vector3 pos;
+        bool active;
+    };
+
     void Tick();
 
     // Geerbt über Hack

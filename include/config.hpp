@@ -8,7 +8,7 @@ class Config : public Singleton<Config>
 public:
     struct Visuals {
         struct Players {
-            bool enabled = false;
+            bool enabled = true;
             bool name = false;
         } player;
     } visuals;

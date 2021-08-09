@@ -18,6 +18,10 @@
 #pragma comment(lib, "D3dcompiler.lib")
 #pragma comment(lib, "d3d11.lib")
 
+// minhook
+#include <MinHook.h>
+#pragma comment(lib, "libMinHook.x64.lib")
+
 //imgui
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
@@ -39,3 +43,4 @@ using namespace alt;
 
 #include "singleton.hpp"
 #include "xor.hpp"
+#include "ida.hpp"

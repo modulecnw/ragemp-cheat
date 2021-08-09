@@ -7,7 +7,6 @@
 void Nemo::Run(HMODULE hModule)
 {
 	this->hModule = hModule;
-	this->hWindow = utils::find_main_window(GetCurrentProcessId());
 
 	Patterns::Instance().Initialize();
 	Memory::Instance().Initialize();
@@ -19,6 +18,14 @@ void Nemo::Run(HMODULE hModule)
 
 void Nemo::Shutdown()
 {
+	MH_DisableHook(MH_ALL_HOOKS);
+	MH_Uninitialize();
+	
+	Hooks::Instance().vthDirectHook->detach(8);
+	Hooks::Instance().vthDirectHook->disable();
+
+	SetWindowLongPtrW(this->hWindow, GWLP_WNDPROC, reinterpret_cast<long long>(this->wWndproc));
+
 	Log::Error(_xor_("nemo:V RAGEMP shutdown."));
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 }
