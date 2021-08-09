@@ -22,11 +22,13 @@ public:
     string pattern_rage037_nametags_setter;
     string pattern_rage037_get_name;
     string pattern_rage037_get_name_verify;
-    string pattern_rage037_ragemp_fetch_handler;
+    string pattern_rageshared_fetch_handler;
 
     /* patterns rage11 */
 
     /* patterns rageshared */
+    string pattern_rageshared_fetch_handler;
+
     // maybe here shared patterns?
 
     void Initialize();

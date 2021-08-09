@@ -37,7 +37,8 @@ public:
 	CRagePool* ptr_rage037_pool = nullptr;
 	get_name_verify_t ptr_rage037_get_name_verify = nullptr;
 	get_rage_name_t ptr_rage037_get_rage_name = nullptr;
-	ragemp_fetch_handler_t ptr_rage037_ragemp_fetch_handler = nullptr;
+
+	ragemp_fetch_handler_t ptr_rageshared_fetch_handler = nullptr;
 
 	void Initialize();
 };

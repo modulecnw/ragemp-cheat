@@ -70,12 +70,13 @@ namespace functions {
 		return sqrt((yY - Yy) * (yY - Yy) + (xX - Xx) * (xX - Xx));
 	}
 
-	inline std::string get_name_from_index(int i)
+	inline std::string get_name_from_index(WORD i)
 	{
-		auto id = __ROR2__(i + ((0x0 - 408) & 0x3FF), 8);
-		auto player = ragemp::ragemp_player_shift[(unsigned __int64)(unsigned __int16)~id];
-		if (player == NULL) return "Not found";
+		if (i < std::size(ragemp::ragemp_player_shift)) {
+			auto id = ~__ROR2__(i + ((0x0 - 0x198) & 0x3FF), 8);
+			return *reinterpret_cast<std::string*>(Memory::Instance().ptr_rage037_get_rage_name(Memory::Instance().ptr_rage037_get_name_verify(), ragemp::ragemp_player_shift[(WORD)id]));
+		}
 
-		return (const char*)Memory::Instance().ptr_rage037_get_rage_name(Memory::Instance().ptr_rage037_get_name_verify(), player);
+		return "Not found";
 	}
 }
