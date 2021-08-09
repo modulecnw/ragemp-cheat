@@ -1,6 +1,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 
 #include "gui/gui.hpp"
+#include "config.hpp"
 
 // elements ui
 //const char* player_esp_box[] = { ("None"), ("2D"), ("3D") };
@@ -229,6 +230,163 @@ void Gui::create_tabs()
 	c_menu_elements::Instance().endchild();
 }
 
+void render_home() {
+	c_menu_elements* ui =
+		&c_menu_elements::Instance();
+
+	if (Gui::Instance().window_subtab_home == 0) {
+		ImGui::BeginGroup();
+		c_menu_elements::Instance().beginchild("HOME_CHILD_1", { 550, 285 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+				ImGui::Text("Welcome to Nemo.");
+				ImGui::Text("Make sure that you own a valid license for this cheat.");
+				ImGui::Text("Otherwise you may get flagged by anti-cheat on big servers.");
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+		ImGui::EndGroup();
+	}
+}
+
+void render_visuals()
+{
+	c_menu_elements* ui =
+		&c_menu_elements::Instance();
+
+	if (Gui::Instance().window_subtab_visuals == 0)
+	{
+
+		ImGui::BeginGroup();
+		ImGui::Text("Player ESP");
+		c_menu_elements::Instance().beginchild("side2zon2e2", { 250, 75 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+				ui->checkbox(("Enabled"), &Config::Instance().visuals.player.enabled);
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+
+		ImGui::Text("Components");
+		c_menu_elements::Instance().beginchild("side2zon2e222", { 250, 275 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+
+				ui->checkbox(("Show Skeleton"), &Config::Instance().visuals.player.skeleton);
+
+				//ui->combo(("Box-Type"), &Config.visuals.players.box, player_esp_box, 3);
+
+				//ui->checkbox(("Show Weapon"), &Config.visuals.players.weapon);
+				//ui->checkbox(("Show Health"), &Config.visuals.players.show_health);
+				//if (Config.visuals.players.show_health)
+				//	ui->combo(("Healthbar-Type"), &Config.visuals.players.show_health_type, player_esp_health_type, 4);
+				//ui->checkbox(("Show Distance"), &Config.visuals.players.show_distance);
+				//ui->checkbox(("Show Name"), &Config.visuals.players.show_name);
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		ImGui::Text("Skeleton");
+		c_menu_elements::Instance().beginchild("sidezo2n51277e2", { 460, 268 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+				ui->checkbox(("HEAD"), &Config::Instance().visuals.player.active_skeletons.HEAD); ImGui::SameLine();
+				ui->checkbox(("NECK"), &Config::Instance().visuals.player.active_skeletons.NECK); ImGui::SameLine();
+				ui->checkbox(("RIGHT_HAND"), &Config::Instance().visuals.player.active_skeletons.RIGHT_HAND);
+				ui->checkbox(("RIGHT_FOREARM"), &Config::Instance().visuals.player.active_skeletons.RIGHT_FOREARM); ImGui::SameLine();
+				ui->checkbox(("RIGHT_UPPER_ARM"), &Config::Instance().visuals.player.active_skeletons.RIGHT_UPPER_ARM); ImGui::SameLine();
+				ui->checkbox(("RIGHT_CLAVICLE"), &Config::Instance().visuals.player.active_skeletons.RIGHT_CLAVICLE);
+				ui->checkbox(("LEFT_HAND"), &Config::Instance().visuals.player.active_skeletons.LEFT_HAND); ImGui::SameLine();
+				ui->checkbox(("LEFT_FOREARM"), &Config::Instance().visuals.player.active_skeletons.LEFT_FOREARM); ImGui::SameLine();
+				ui->checkbox(("LEFT_UPPER_ARM"), &Config::Instance().visuals.player.active_skeletons.LEFT_UPPER_ARM);
+				ui->checkbox(("LEFT_CLAVICLE"), &Config::Instance().visuals.player.active_skeletons.LEFT_CLAVICLE); ImGui::SameLine();
+				ui->checkbox(("PELVIS"), &Config::Instance().visuals.player.active_skeletons.PELVIS); ImGui::SameLine();
+				ui->checkbox(("SPINE_ROOT"), &Config::Instance().visuals.player.active_skeletons.SPINE_ROOT);
+				ui->checkbox(("SPINE0"), &Config::Instance().visuals.player.active_skeletons.SPINE0); ImGui::SameLine();
+				ui->checkbox(("SPINE1"), &Config::Instance().visuals.player.active_skeletons.SPINE1); ImGui::SameLine();
+				ui->checkbox(("SPINE2"), &Config::Instance().visuals.player.active_skeletons.SPINE2);
+				ui->checkbox(("SPINE3"), &Config::Instance().visuals.player.active_skeletons.SPINE3); ImGui::SameLine();
+				ui->checkbox(("RIGHT_TOE"), &Config::Instance().visuals.player.active_skeletons.RIGHT_TOE); ImGui::SameLine();
+				ui->checkbox(("RIGHT_FOOT"), &Config::Instance().visuals.player.active_skeletons.RIGHT_FOOT);
+				ui->checkbox(("RIGHT_CALF"), &Config::Instance().visuals.player.active_skeletons.RIGHT_CALF); ImGui::SameLine();
+				ui->checkbox(("RIGHT_THIGH"), &Config::Instance().visuals.player.active_skeletons.RIGHT_THIGH); ImGui::SameLine();
+				ui->checkbox(("LEFT_TOE"), &Config::Instance().visuals.player.active_skeletons.LEFT_TOE);
+				ui->checkbox(("LEFT_FOOT"), &Config::Instance().visuals.player.active_skeletons.LEFT_FOOT); ImGui::SameLine();
+				ui->checkbox(("LEFT_CALF"), &Config::Instance().visuals.player.active_skeletons.LEFT_CALF); ImGui::SameLine();
+				ui->checkbox(("LEFT_THIGH"), &Config::Instance().visuals.player.active_skeletons.LEFT_THIGH);
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+		ImGui::Text("Skeleton");
+		c_menu_elements::Instance().beginchild("sidezo2n5127dfg7e2", { 460, 55 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+				//ImGui::ColorEdit3("Skeleton Color", Config.visuals.players.skeleton_color, ImGuiColorEditFlags_NoInputs);
+				//ImGui::SameLine();
+				//ImGui::ColorEdit3("Text Color", Config.visuals.players.text_color, ImGuiColorEditFlags_NoInputs);
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+		ImGui::EndGroup();
+	}
+	else if (Gui::Instance().window_subtab_visuals == 1)
+	{
+		ImGui::BeginGroup();
+		ImGui::Text("Vehicle ESP");
+		c_menu_elements::Instance().beginchild("side2zon2e2", { 250, 45 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+				//ui->checkbox(("Enabled"), &Config.visuals.vehicles.enabled);
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+
+		ImGui::Text("Components");
+		c_menu_elements::Instance().beginchild("side2zon2e222", { 250, 285 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+
+				//ui->checkbox(("Show Locked State"), &Config.visuals.vehicles.show_locked);
+				//if (Config.visuals.vehicles.show_locked) {
+					//ui->combo(("Locked Visual-Type"), &Config.visuals.vehicles.locked_font_type, visual_font_type, 2);
+				//}
+				//ui->checkbox(("Show Engine-Status"), &Config.visuals.vehicles.show_engine);
+				//if (Config.visuals.vehicles.show_engine) {
+					//ui->combo(("Engine Visual-Type"), &Config.visuals.vehicles.engine_font_type, visual_font_type, 2);
+				//}
+
+				//ui->checkbox(("Show Distance"), &Config.visuals.vehicles.show_distance);
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+		ImGui::EndGroup();
+	}
+}
+
+
 void Gui::create_items()
 {
 	ImGui::SetCursorPos({ 27, 98 });
@@ -236,9 +394,9 @@ void Gui::create_items()
 	{
 		switch (this->window_tab)
 		{
-			/*case 0: render_home(); break;
+			case 0: render_home(); break;
 			case 1: render_visuals(); break;
-			case 2: render_aimings(); break;
+				/*case 2: render_aimings(); break;
 			case 3: render_misc(); break;
 			case 4: render_config(); break;
 			case 5: render_files(); break;
