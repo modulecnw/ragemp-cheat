@@ -13,7 +13,7 @@ void Memory::Initialize() {
 	}
 
 	this->ptr_gta_swapchain					= *memory::as_relative<IDXGISwapChain**>(memory::find_pattern(this->gta5_module, _xor_("Swapchain"), Patterns::Instance().pattern_gta_swapchain));
-	this->ptr_gta_world						= memory::as_relative<CWorld*>(memory::find_pattern(this->gta5_module, _xor_("World"), Patterns::Instance().pattern_gta_world));
+	this->ptr_gta_world				= memory::find_pattern<CWorld*>(this->gta5_module, _xor_("World"), Patterns::Instance().pattern_gta_world);
 	this->ptr_gta_viewport					= memory::as_relative<CViewPort*>(memory::find_pattern(this->gta5_module, _xor_("Viewport"), Patterns::Instance().pattern_gta_viewport));
 	this->ptr_gta_world_to_screen			= memory::find_pattern<world_to_screen_t>(this->gta5_module, _xor_("WorldToScreen"), Patterns::Instance().pattern_gta_world_to_screen, -65);
 	this->ptr_gta_get_bone_position			= memory::find_pattern<get_bone_position_t>(this->gta5_module, _xor_("GetBone"), Patterns::Instance().pattern_gta_get_bone_position, -16);
@@ -21,6 +21,7 @@ void Memory::Initialize() {
 	this->ptr_gta_fix_context_vector		= memory::find_pattern<fix_context_vector_t>(this->gta5_module, _xor_("FixContextVector"), Patterns::Instance().pattern_gta_fix_context_vector);
 	this->ptr_gta_fetch_native_handler		= memory::as_relative<fetch_native_handler_t>(memory::find_pattern(this->gta5_module, _xor_("FetchNativeHandler"), Patterns::Instance().pattern_gta_fetch_native_handler), 1);
 	this->ptr_gta_native_handler_table		= memory::as_relative<uintptr_t*>(memory::find_pattern(this->gta5_module, _xor_("NativeHandlerTable"), Patterns::Instance().pattern_gta_native_handler_table));
+	this->ptr_gta_pointer_to_handle			= memory::find_pattern<pointer_to_handle_t>(this->gta5_module, _xor_("PointerToHandle"), Patterns::Instance().pattern_gta_pointer_to_handle);
 
 	if(this->multiplayer_framework == MultiplayerFrameworks::RAGEMP_037) {
 		this->ptr_rage037_pool					= *memory::as_relative<CRagePool**>(memory::find_pattern(this->ragemp_module, _xor_("Rage Replayinterface"), Patterns::Instance().pattern_rage037_replayinterface));

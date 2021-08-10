@@ -176,7 +176,7 @@ public:
 
 class CWorld {
 public:
-	char _0x0000[8];
+	char _0x0000[0x8];
 	CObject* pLocalPlayer; //0x0008 
 
 	CObject* getLocalPlayer() {
@@ -188,6 +188,11 @@ public:
 		}
 	}
 };//Size=0x0016
+
+class CWorldFactory {
+public:
+	CWorld* world;
+};
 
 
 class CModelInfo {

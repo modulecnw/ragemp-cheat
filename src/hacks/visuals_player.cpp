@@ -55,14 +55,14 @@ void draw_bones(CPlayerBones bones) {
 		if ((bone2d.y < Nemo::Instance().vScreen.y) && (bone2d.x < Nemo::Instance().vScreen.x))
 			if ((bone2d1.y < Nemo::Instance().vScreen.y) && (bone2d1.x < Nemo::Instance().vScreen.x))
 				if ((bone2d.y > 5 && bone2d.x > 5) && (bone2d1.x > 5 && bone2d1.y > 5))
-					utils::render::draw_line(bone2d.x, bone2d.y, bone2d1.x, bone2d1.y, 255, 255, 255, 255);
+					utils::render::draw_line(bone2d.x, bone2d.y, bone2d1.x, bone2d1.y, 255, 255, 255, 255, 0.1f);
 	}
 }
 
 void VisualsPlayer::Tick()
 {
 	if (!Config::Instance().visuals.player.enabled) return;
-		
+
 	for (int i = 0; i < 255; i++) {
 		auto* nPed = &Replayinterface::Instance().peds[i];
 		if (nPed == NULL) continue;
@@ -70,7 +70,7 @@ void VisualsPlayer::Tick()
 		if (!IsValidPtr(nPed) || !IsValidPtr(nPed->ped) || !IsValidPtr(nPed->player)) continue;
 
 		CObject* ped = nPed->ped;
-		if (ped == NULL || !IsValidPtr(ped)) continue;
+		if (ped == NULL || !IsValidPtr(ped) || Replayinterface::Instance().local_player == Memory::Instance().ptr_gta_pointer_to_handle(ped)) continue;
 
 		CRemotePlayer* player = nPed->player;
 		if (player == NULL || !IsValidPtr(player)) continue;

@@ -15,6 +15,8 @@ public:
     };
     NPed peds[256];
 
+    unsigned int local_player;
+
     void Tick();
 
     // Geerbt über Hack

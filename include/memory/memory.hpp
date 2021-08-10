@@ -13,6 +13,7 @@ public:
 	using fetch_native_handler_t = void* (*)(uintptr_t* table, uint64_t hash);
 	using ragemp_fetch_handler_t = uintptr_t(*)(uintptr_t hash);
 
+	using pointer_to_handle_t = int32_t(*)(void* ptr);
 	using world_to_screen_t = bool(*)(Vector3* coords, float* x, float* y);
 	using get_bone_position_t = void(*)(int32_t* ped, __m128* pos, int32_t bone);
 
@@ -32,6 +33,7 @@ public:
 	script_thread_tick_t ptr_gta_script_thread_tick = nullptr;
 	fix_context_vector_t ptr_gta_fix_context_vector = nullptr;
 	fetch_native_handler_t ptr_gta_fetch_native_handler = nullptr;
+	pointer_to_handle_t ptr_gta_pointer_to_handle = nullptr;
 	uintptr_t* ptr_gta_native_handler_table = 0;
 
 	CRagePool* ptr_rage037_pool = nullptr;

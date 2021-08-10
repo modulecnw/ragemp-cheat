@@ -4,8 +4,8 @@ void Patterns::Initialize() {
     Log::Warning(_xor_("[+] Patterns >> Initializing gta patterns..."));
 
     /* patterns gta */
-    this->pattern_gta_swapchain = _xor_("48 8B 0D ? ? ? ? 48 8B 01 44 8D 43 01 33 D2 FF 50 40 8B C8").c_str();
-    this->pattern_gta_world = _xor_("48 8B 05 ? ? ? ? 48 8B 58 08 48 85 DB 74 32");
+    this->pattern_gta_swapchain = _xor_("48 8B 0D ? ? ? ? 48 8B 01 44 8D 43 01 33 D2 FF 50 40 8B C8");
+    this->pattern_gta_world = _xor_("48 8B 05 ? ? ? ? 48 8B 40 08 48 83 C4 20");
     this->pattern_gta_viewport = _xor_("48 8B 15 ? ? ? ? 48 8D 2D ? ? ? ? 48 8B CD");
     this->pattern_gta_world_to_screen = _xor_("48 8B E9 C6 44 24 ? ? F3 0F 10 09");
     this->pattern_gta_get_bone_position = _xor_("48 83 EC 60 48 8B 01 41 8B E8 48 8B F2");
@@ -13,6 +13,7 @@ void Patterns::Initialize() {
     this->pattern_gta_fix_context_vector = _xor_("83 79 18 00 48 8B D1 74 4A FF 4A 18 48 63 4A 18 48 8D 41 04 48 8B 4C CA");
     this->pattern_gta_fetch_native_handler = _xor_("E8 ? ? ? ? 48 85 C0 75 0A 48 8D 05 ? ? ? ?");
     this->pattern_gta_native_handler_table = _xor_("48 8D 0D ? ? ? ? 48 8B 14 FA E8 ? ? ? ? 48 85 C0 75 0A");
+    this->pattern_gta_pointer_to_handle = _xor_("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB");
 
     Log::Warning(_xor_("[+] Patterns >> Initializing rage037 patterns..."));
 
