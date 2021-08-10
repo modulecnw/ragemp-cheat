@@ -66,7 +66,7 @@ namespace memory
 		auto base = mod.base();
 		for (size_t i = 0; i < mod.size(); i++)
 			if (correlate(reinterpret_cast<uint8_t*>(base + i), data, length)) {
-				Log::Debug(_xor_("[+] Memory >>"), name, (base + i + offset));
+				Log::Debug(_xor_("[+] Memory >>"), name, (base + i + offset), "#" + std::to_string(pattern_id));
 				return (type)(base + i + offset);
 			}
 

@@ -2,6 +2,7 @@
 
 #include "gui/gui.hpp"
 #include "config.hpp"
+#include "memory/memory.hpp"
 
 // elements ui
 //const char* player_esp_box[] = { ("None"), ("2D"), ("3D") };

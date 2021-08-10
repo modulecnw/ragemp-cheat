@@ -461,7 +461,7 @@ public:
 	char pad_0x075C[0xF0]; //0x075C
 	float fHealth2; //0x084C 
 	char pad_0x0850[0x28]; //0x0850
-	CVehicleHandling* pVehicleHandling; //0x0878 
+	CVehicleHandling* pVehicleHandlingOutdated; //0x0878 
 	char pad_0x0880[0x3]; //0x0880
 	BYTE btBulletproofTires; //0x0883 
 	char pad_0x0884[0x4]; //0x0884
@@ -471,7 +471,8 @@ public:
 	char pad_0x089B[0x41]; //0x089B
 	float N0000081E; //0x08DC 
 	char pad_0x08E0[0x58]; //0x08E0
-	float fDirtLevel; //0x0938			max = 15.f
+	CVehicleHandling* pVehicleHandling;
+	//float fDirtLevel; //0x0938			max = 15.f
 	char pad_0x093C[0xA8]; //0x093C
 	DWORD dwCarAlarmLength; //0x09E4 
 	char pad_0x09E8[0x148]; //0x09E8

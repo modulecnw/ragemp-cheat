@@ -20,8 +20,6 @@ const int MAX_OBJECTS = 255;
 
 void Replayinterface::Tick()
 {
-	this->local_player = native::player::player_ped_id();
-
 	// get called in fiber
 	/* players*/
 	for (int i = 0; i < MAX_PLAYERS; i++) {

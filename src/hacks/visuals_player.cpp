@@ -70,7 +70,7 @@ void VisualsPlayer::Tick()
 		if (!IsValidPtr(nPed) || !IsValidPtr(nPed->ped) || !IsValidPtr(nPed->player)) continue;
 
 		CObject* ped = nPed->ped;
-		if (ped == NULL || !IsValidPtr(ped) || Replayinterface::Instance().local_player == Memory::Instance().ptr_gta_pointer_to_handle(ped)) continue;
+		if (ped == NULL || !IsValidPtr(ped) || Memory::Instance().ptr_gta_world_factory->world->getLocalPlayer() == ped) continue;
 
 		CRemotePlayer* player = nPed->player;
 		if (player == NULL || !IsValidPtr(player)) continue;

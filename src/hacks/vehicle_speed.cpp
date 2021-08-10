@@ -26,6 +26,8 @@ void VehicleSpeed::Tick()
 		auto ped = player::player_ped_id();
 		auto vehicle = ped::get_vehicle_ped_is_in(ped, false);
 
+		auto cam = functions::get_cam_directions();
+
 		controls::disable_control_action(0, 75, true);
 		controls::disable_control_action(27, 75, true);
 
@@ -44,7 +46,8 @@ void VehicleSpeed::Tick()
 			Log::Debug("fMass: ", vehicle_ptr->handling()->fMass);
 
 			if (GetAsyncKeyState(0x57)) {
-				//not ready now
+				if ((entity::get_entity_speed(vehicle) * 3.6) < 280)
+					entity::apply_force_to_entity(vehicle, 1, cam.x, cam.y, cam.z, 0, 0, 0, 1, 0, 1, 1, 1, 1);
 			}
 
 			if (GetAsyncKeyState(0x53)) {
