@@ -13,7 +13,7 @@ void Memory::Initialize() {
 	}
 
 	this->ptr_gta_swapchain					= *memory::as_relative<IDXGISwapChain**>(memory::find_pattern(this->gta5_module, _xor_("Swapchain"), Patterns::Instance().pattern_gta_swapchain));
-	this->ptr_gta_world				= memory::find_pattern<CWorld*>(this->gta5_module, _xor_("World"), Patterns::Instance().pattern_gta_world);
+	this->ptr_gta_world_factory				= memory::as_relative<CWorldFactory*>(memory::find_pattern(this->gta5_module, _xor_("WorldFactory"), Patterns::Instance().pattern_gta_world_factory, -11));
 	this->ptr_gta_viewport					= memory::as_relative<CViewPort*>(memory::find_pattern(this->gta5_module, _xor_("Viewport"), Patterns::Instance().pattern_gta_viewport));
 	this->ptr_gta_world_to_screen			= memory::find_pattern<world_to_screen_t>(this->gta5_module, _xor_("WorldToScreen"), Patterns::Instance().pattern_gta_world_to_screen, -65);
 	this->ptr_gta_get_bone_position			= memory::find_pattern<get_bone_position_t>(this->gta5_module, _xor_("GetBone"), Patterns::Instance().pattern_gta_get_bone_position, -16);

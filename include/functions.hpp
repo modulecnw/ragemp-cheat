@@ -2,9 +2,32 @@
 #include "imports.hpp"
 #include "memory/memory.hpp"
 #include "ragemp/ragemp_shift.hpp"
+#include "gta/natives/database.hpp"
 #include <utils.hpp>
 
 namespace functions {
+	inline Vector3 get_cam_directions() {
+		using namespace native;
+
+		const double PI = 3.141592653589793238463;
+
+		float heading = cam::get_gameplay_cam_relative_heading() + entity::get_entity_heading(player::player_ped_id());
+		float pitch = cam::get_gameplay_cam_relative_pitch();
+
+		float x = -sin(heading * PI / 180.0f);
+		float y = cos(heading * PI / 180.0f);
+		float z = sin(pitch * PI / 180.0f);
+
+		double len = sqrt(x * x + y * y + z * z);
+		if (len != 0) {
+			x = x / len;
+			y = y / len;
+			z = z / len;
+		}
+
+		return Vector3(x, y, z);
+	}
+
 	inline bool world_to_screen(Vector3 pos, ImVec2* out) {
 		Vector3	tmp;
 
@@ -45,7 +68,7 @@ namespace functions {
 	}
 
 	inline CObject* get_local() {
-		CWorld* world = Memory::Instance().ptr_gta_world;
+		CWorld* world = Memory::Instance().ptr_gta_world_factory->world;
 		return world->getLocalPlayer();
 	}
 

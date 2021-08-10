@@ -20,5 +20,5 @@ std::string VehicleFly::getName()
 
 void VehicleFly::Tick()
 {
-
+	//soon
 }

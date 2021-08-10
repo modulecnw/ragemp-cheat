@@ -6,6 +6,10 @@ using namespace std;
 class Config : public Singleton<Config>
 {
 public:
+	struct Self {
+		bool noclip = false;
+	} self;
+
     struct Visuals {
         struct Players {
             bool enabled = true;
@@ -13,7 +17,7 @@ public:
             bool skeleton = false;
 
 			struct Skeletons {
-				bool HEAD = true;
+				bool HEAD = false;
 				bool NECK = true;
 				bool RIGHT_HAND = true;
 				bool RIGHT_FOREARM = true;

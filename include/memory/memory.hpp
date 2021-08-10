@@ -26,7 +26,7 @@ public:
 	MultiplayerFrameworks multiplayer_framework = MultiplayerFrameworks::RAGEMP_037;
 
 	IDXGISwapChain* ptr_gta_swapchain = nullptr;
-	CWorld* ptr_gta_world = nullptr;
+	CWorldFactory* ptr_gta_world_factory = nullptr;
 	CViewPort* ptr_gta_viewport = nullptr;
 	world_to_screen_t ptr_gta_world_to_screen = nullptr;
 	get_bone_position_t ptr_gta_get_bone_position = nullptr;

@@ -93,7 +93,7 @@ void Renderer::Render(IDXGISwapChain* this_swapchain_pointer, unsigned int sync_
 	ImGui::SetWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 	ImGui::SetWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y), ImGuiCond_Always);
 
-	if (Memory::Instance().ptr_gta_world != nullptr) {
+	if (Memory::Instance().ptr_gta_world_factory != nullptr) {
 		// client render
 		Client::Instance().Render();
 	}

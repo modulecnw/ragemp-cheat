@@ -1,10 +1,12 @@
 #include "gta/fiber.hpp"
 #include "gta/tick.hpp"
 #include "hacks/replayinterface.hpp"
+#include "hacks/noclip.hpp"
 #include "hacks/vehicle_speed.hpp"
 #include <memory.h>
 
 void on_native_thread() {
+	Noclip::Instance().Tick();
 	VehicleSpeed::Instance().Tick();
 	Replayinterface::Instance().Tick();
 	tick::pnative.on_tick();

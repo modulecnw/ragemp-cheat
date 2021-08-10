@@ -30,15 +30,21 @@ void VehicleSpeed::Tick()
 		controls::disable_control_action(27, 75, true);
 
 		if (vehicle) {
+
+			vehicle::set_vehicle_fixed(vehicle); // for testings
+
+			if (functions::get_local() == nullptr) return;
+
+			auto vehicle_ptr = functions::get_local()->vehicle();
+			if (!IsValidPtr(vehicle_ptr)) return;
+
+			Log::Debug("Gravity: ", vehicle_ptr->fGravity);
+			Log::Debug("fAcceleration: ", vehicle_ptr->handling()->fAcceleration);
+			Log::Debug("fDriveInertia: ", vehicle_ptr->handling()->fDriveInertia);
+			Log::Debug("fMass: ", vehicle_ptr->handling()->fMass);
+
 			if (GetAsyncKeyState(0x57)) {
-				// world need to be fixed
-				if (functions::get_local() != nullptr) {
-					auto vehicle_ptr = functions::get_local()->VehicleManager;
-					if (IsValidPtr(vehicle_ptr))
-					{
-						vehicle_ptr->fGravity++;
-					}
-				}
+				//not ready now
 			}
 
 			if (GetAsyncKeyState(0x53)) {

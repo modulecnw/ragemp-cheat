@@ -2,6 +2,7 @@
 #include "gta/natives/database.hpp"
 #include <queue>
 #include "gta/tick.hpp"
+#include "config.hpp"
 
 Vector3 savedPos = Vector3(0, 0, 0);
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -13,6 +14,8 @@ LRESULT Wndproc::call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w,
 		{
 			Gui::Instance().bMenuOpen ^= 1;
 		}
+
+		if (param_w == VK_NUMPAD9) Config::Instance().self.noclip = !Config::Instance().self.noclip;
 
 		/* VEHICLE STEALER, need to be ported into hack module */
 		if (param_w == VK_NUMPAD1) {
