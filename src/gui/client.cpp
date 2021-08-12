@@ -4,7 +4,7 @@
 #include <hacks/visuals_player.hpp>
 
 void Client::Render() {
-	//utils::render::draw_text(15, 15, "nemo:V");
+	utils::render::draw_text(15, 15, "nemo:V");
 	
 	VisualsPlayer::Instance().Tick();
 }

@@ -83,6 +83,7 @@ void VisualsPlayer::Tick()
 		std::string player_name = functions::get_name_from_index(player->iHandle);
 		utils::render::draw_text(player_pos.x - (ImGui::CalcTextSize(player_name.c_str()).x / 2), player_pos.y + 23, functions::get_name_from_index(player->iHandle));
 
-		draw_bones(nPed->bones);
+		if (Config::Instance().visuals.player.skeleton)
+			draw_bones(nPed->bones);
 	}
 }

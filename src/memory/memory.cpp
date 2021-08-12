@@ -1,6 +1,7 @@
 #include "memory/memory.hpp"
 #include "memory/patterns.hpp"
 #include "gta/fiber.hpp"
+#include "hooks/hooks.hpp"
 
 void Memory::Initialize() {
 	this->gta5_module = memory::module_t(nullptr);
@@ -13,6 +14,7 @@ void Memory::Initialize() {
 	}
 
 	this->ptr_gta_swapchain					= *memory::as_relative<IDXGISwapChain**>(memory::find_pattern(this->gta5_module, _xor_("Swapchain"), Patterns::Instance().pattern_gta_swapchain));
+	
 	this->ptr_gta_world_factory				= memory::as_relative<CWorldFactory*>(memory::find_pattern(this->gta5_module, _xor_("WorldFactory"), Patterns::Instance().pattern_gta_world_factory, -11));
 	this->ptr_gta_viewport					= memory::as_relative<CViewPort*>(memory::find_pattern(this->gta5_module, _xor_("Viewport"), Patterns::Instance().pattern_gta_viewport));
 	this->ptr_gta_world_to_screen			= memory::find_pattern<world_to_screen_t>(this->gta5_module, _xor_("WorldToScreen"), Patterns::Instance().pattern_gta_world_to_screen, -65);

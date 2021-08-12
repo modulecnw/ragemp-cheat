@@ -22,6 +22,8 @@ float last_speed = 50;
 
 void VehicleSpeed::Tick()
 {
+	if (!Config::Instance().vehicle.speed.enabled) return;
+
 	using namespace native;
 
 	if (GetAsyncKeyState(VK_SHIFT)) {
@@ -51,11 +53,16 @@ void VehicleSpeed::Tick()
 					last_speed = speed;
 				}
 
-				entity::set_entity_rotation(vehicle, rot.x, rot.y, rot.z, 1, true);
-				float z = 0.0f;
+				if (Config::Instance().vehicle.speed.set_rotation)
+					entity::set_entity_rotation(vehicle, rot.x, rot.y, rot.z, 1, true);
 
-				if (gameplay::get_ground_z_for_3d_coord(pos.x, pos.y, pos.z, &z, false)) {
-					entity::set_entity_coords_no_offset(vehicle, pos.x, pos.y, z, false, false, false);
+				if (Config::Instance().vehicle.speed.only_ground)
+				{
+					float z = 0.0f;
+
+					if (gameplay::get_ground_z_for_3d_coord(pos.x, pos.y, pos.z, &z, false)) {
+						entity::set_entity_coords_no_offset(vehicle, pos.x, pos.y, z, false, false, false);
+					}
 				}
 
 

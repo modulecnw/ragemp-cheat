@@ -1,4 +1,5 @@
 #include "gui/elements.h"
+#include "hooks/hooks.hpp"
 
 #include <iostream>
 
@@ -37,6 +38,70 @@ ImU32 c_menu_elements::quick_lerp(ImVec4 from, ImVec4 to, float step) {
 	else _col = ImGui::GetColorU32(ImLerp(from, to, step));
 
 	return _col;
+}
+
+bool c_menu_elements::button(std::string label_str, ImVec2 size_arg, ImGuiButtonFlags flags)
+{
+	const char* label = label_str.c_str();
+
+	ImGuiWindow* window = ImGui::GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	if ((size_arg.x && size_arg.y) == 0)
+		size_arg = ImVec2(150, 30);
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label);
+	const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+	const float out_sz = 5;
+
+	ImVec2 pos = window->DC.CursorPos;
+	if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+		pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	ImVec2 size = ImGui::CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	const ImRect bb(pos, pos + size);
+	ImGui::ItemSize(size, style.FramePadding.y);
+	if (!ImGui::ItemAdd(bb, id))
+		return false;
+
+	if (window->DC.ItemFlags & ImGuiItemFlags_ButtonRepeat)
+		flags |= ImGuiButtonFlags_Repeat;
+	bool hovered, held;
+	bool pressed = ImGui::ButtonBehavior(bb, id, &hovered, &held, flags);
+
+	if (hovered)
+		ImGui::SetMouseCursor(7);
+
+	bool draw_outer = false;
+
+	float t = draw_outer ? 1.0f : 0.0f;
+	float ANIM_SPEED = 0.45f;
+	if (g.LastActiveId == g.CurrentWindow->GetID(label)) {
+		float t_anim = ImSaturate(g.LastActiveIdTimer / ANIM_SPEED);
+		t = draw_outer ? (t_anim) : (1.0f - t_anim);
+	}
+
+	if (pressed)
+		draw_outer = !draw_outer;
+
+	if ((t >= 0))
+		ImGui::GetWindowDrawList()->AddRectFilled(
+			bb.Min - ImVec2(out_sz * (1 - t), out_sz * (1 - t)),
+			bb.Max + ImVec2(out_sz * (1 - t), out_sz * (1 - t)),
+			ImGui::GetColorU32(ImGuiCol_MainColorAccent, t),
+			4.0f
+		);
+
+	const ImU32 col = ImGui::GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
+	ImGui::RenderNavHighlight(bb, id);
+	ImGui::RenderFrame(bb.Min, bb.Max, col, true, 4.f/*style.FrameRounding*/);
+	ImGui::RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, style.ButtonTextAlign, &bb);
+
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, window->DC.LastItemStatusFlags);
+	return pressed;
 }
 
 bool c_menu_elements::button(const char* label, ImVec2 size_arg, ImGuiButtonFlags flags)
@@ -103,6 +168,8 @@ bool c_menu_elements::button(const char* label, ImVec2 size_arg, ImGuiButtonFlag
 
 void c_menu_elements::tab(const char* label, int* value, int index)
 {
+	if (!Hooks::Instance().MH_Initialized && index > 0) return;
+
 	ImGuiContext& g = *GImGui;
 	ImVec2 p = ImGui::GetCursorScreenPos();
 	ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -136,6 +203,121 @@ void c_menu_elements::tab(const char* label, int* value, int index)
 
 	draw_list->AddRectFilled(total_bb.Min + ImVec2(0, 37), total_bb.Max, col_bg/*ImGui::GetColorU32(ImGuiCol_MainColorAccent, t)*/);
 	draw_list->AddText(total_bb.Min + ImVec2(11, 12), col_txt/*ImGui::GetColorU32(ImGuiCol_Text, 0.45 + t)*/, label);
+}
+
+/*void c_menu_elements::subtab(const char* label, const char* icon, int* selected, int index, int width)
+{
+	ImGuiContext& g = *GImGui;
+	ImVec2 p = ImGui::GetCursorScreenPos();
+	ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+	const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+	const ImVec2 icon_size = ImGui::CalcTextSize(icon, NULL, true);
+	const ImGuiStyle& style = g.Style;
+
+	const ImRect total_bb = ImRect(p, p + ImVec2(width, 39));
+
+	ImGui::InvisibleButton(label, ImVec2(width, 39));
+
+	if (ImGui::IsItemHovered())
+		ImGui::SetMouseCursor(7);
+
+	if (ImGui::IsItemClicked())
+		*selected = index;
+
+	float t = *selected == index ? 1.0f : 0.0f;
+	if (g.LastActiveId == g.CurrentWindow->GetID(label))
+	{
+		float t_anim = ImSaturate(g.LastActiveIdTimer / 0.23f);
+		t = *selected == index ? (t_anim) : (1.0f - t_anim);
+	}
+
+	ImU32 col_bg = ImU32();
+	col_bg =
+		quick_lerp(ImGui::ColorConvertU32ToFloat4(ImGui::GetColorU32(ImGuiCol_SubtabZoneBackground)), ImGui::ColorConvertU32ToFloat4(ImGui::GetColorU32(ImGuiCol_SubtabActiveBackground)), t);
+
+	ImU32 col_txt = ImU32();
+	col_txt =
+		quick_lerp(ImGui::ColorConvertU32ToFloat4(ImGui::GetColorU32(ImGuiCol_TextDisabled)), ImGui::ColorConvertU32ToFloat4(ImGui::GetColorU32(ImGuiCol_Text)), t);
+
+	draw_list->AddRectFilled(
+		total_bb.Min, total_bb.Max,
+		col_bg);
+
+	draw_list->AddText(total_bb.Min + ImVec2(width / 2 - icon_size.x / 2, 7), col_txt, icon);
+	draw_list->AddText(total_bb.Min + ImVec2(width / 2 - label_size.x / 2, 22), col_txt, label);
+}*/
+
+bool c_menu_elements::checkbox(std::string label_str, bool* value, const char* desc)
+{
+	const char* label = label_str.c_str();
+	bool result = false;
+
+	ImGuiContext& g = *GImGui;
+	ImVec2 p = ImGui::GetCursorScreenPos();
+	ImDrawList* draw_list = ImGui::GetWindowDrawList();
+	ImVec4 check_col_vec4 = ImGui::ColorConvertU32ToFloat4(ImGui::GetColorU32(ImGuiCol_MainColorAccent));
+
+	const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+	const ImGuiStyle& style = g.Style;
+	const float square_sz = ImGui::GetFrameHeight();
+	const ImRect total_bb = ImRect(p, p + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f), label_size.y + style.FramePadding.y * 2.0f));
+	const ImRect check_bb = ImRect(p, p + ImVec2(square_sz, square_sz));
+
+	const float nGpad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
+	float height = ImGui::GetFrameHeight();
+	float width = height * 1.5 + label_size.x;
+	const float radius = 7;
+
+	ImGui::InvisibleButton(label, ImVec2(width, height));
+
+	if (ImGui::IsItemClicked()) {
+		*value = !*value;
+		result = true;
+	}
+
+	float t = *value ? 1.0f : 0.0f;
+	float ANIM_SPEED = 0.23f; // Bigger = Slower
+	if (g.LastActiveId == g.CurrentWindow->GetID(label)) {
+		float t_anim = ImSaturate(g.LastActiveIdTimer / ANIM_SPEED);
+		t = *value ? (t_anim) : (1.0f - t_anim);
+	}
+
+	ImU32 col_bg;
+	if (ImGui::IsItemHovered())
+		col_bg = ImGui::GetColorU32(ImLerp(ImGui::ColorConvertU32ToFloat4(ImGui::GetColorU32(ImGuiCol_FrameBgHovered)),
+			ImVec4(check_col_vec4.x + 0.03f,
+				check_col_vec4.y + 0.03f,
+				check_col_vec4.z + 0.3f, t), t)),
+		ImGui::SetMouseCursor(7);
+	else col_bg = ImGui::GetColorU32(ImLerp(ImGui::ColorConvertU32ToFloat4(ImGui::GetColorU32(ImGuiCol_FrameBgActive)),
+		check_col_vec4, t));
+
+	if (*value || (t != 0.f))
+		draw_list->AddCircle(
+			check_bb.Min + ImVec2(nGpad + radius + 2, nGpad + radius + 2),
+			radius,
+			col_bg,
+			24,
+			3.0 * t
+		);
+
+	draw_list->AddCircle(
+		check_bb.Min + ImVec2(nGpad + radius + 2, nGpad + radius + 2),
+		radius,
+		col_bg,
+		24,
+		3.5 /*+ t*/
+	);
+
+	if (label_size.x > 0.0f)
+		ImGui::RenderText(ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y), label);
+
+#ifdef DEBUG
+	draw_list->AddText(ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x + 100, check_bb.Min.y + style.FramePadding.y), ImColor(255, 255, 255), std::to_string(t).c_str());
+#endif
+
+	return result;
 }
 
 void c_menu_elements::subtab(const char* label, const char* icon, int* selected, int index, int width)
