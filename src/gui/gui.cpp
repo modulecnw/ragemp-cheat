@@ -434,19 +434,23 @@ void render_misc()
 				ui->checkbox(_xor_("Autorepair").c_str(), &Config::Instance().vehicle.auto_repair);
 				if (ui->button(_xor_("Repair Vehicle"), { 100, 30 }))
 				{
-					if (Memory::Instance().ptr_gta_world_factory->world->getLocalPlayer() != nullptr &&
-						Memory::Instance().ptr_gta_world_factory->world->getLocalPlayer()->btIsInVehicle)
-					{
-						run_as_native(vehicle::set_vehicle_fixed(ped::get_vehicle_ped_is_in(player::player_ped_id(), false)));
-					}
+					tick::thread_invoker::queue([]
+						{
+							auto ped = player::player_ped_id();
+							if (ped::is_ped_in_any_vehicle(ped, false))
+								vehicle::set_vehicle_fixed(ped::get_vehicle_ped_is_using(ped));
+						}
+					);
 				}
 				if (ui->button(_xor_("Start Engine"), { 100, 30 }))
 				{
-					if (Memory::Instance().ptr_gta_world_factory->world->getLocalPlayer() != nullptr &&
-						Memory::Instance().ptr_gta_world_factory->world->getLocalPlayer()->btIsInVehicle)
-					{
-						run_as_native(vehicle::set_vehicle_engine_on(ped::get_vehicle_ped_is_in(player::player_ped_id(), false), true, true, false));
-					}
+					tick::thread_invoker::queue([]
+						{
+							auto ped = player::player_ped_id();
+							if (ped::is_ped_in_any_vehicle(ped, false))
+								vehicle::set_vehicle_engine_on(ped::get_vehicle_ped_is_using(ped), true, true, false);
+						}
+					);
 				}
 			}
 			ImGui::EndGroup();

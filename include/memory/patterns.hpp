@@ -17,6 +17,7 @@ public:
     string pattern_gta_fetch_native_handler;
     string pattern_gta_native_handler_table;
     string pattern_gta_pointer_to_handle;
+    string pattern_gta_game_state;
 
     /* patterns rage037 */
     string pattern_rage037_replayinterface;

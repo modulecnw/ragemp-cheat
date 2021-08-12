@@ -14,6 +14,7 @@ void Patterns::Initialize() {
     this->pattern_gta_fetch_native_handler = _xor_("E8 ? ? ? ? 48 85 C0 75 0A 48 8D 05 ? ? ? ?");
     this->pattern_gta_native_handler_table = _xor_("48 8D 0D ? ? ? ? 48 8B 14 FA E8 ? ? ? ? 48 85 C0 75 0A");
     this->pattern_gta_pointer_to_handle = _xor_("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB");
+    this->pattern_gta_game_state = _xor_("48 85 C9 74 4B 83 3D");
 
     Log::Warning(_xor_("[+] Patterns >> Initializing rage037 patterns..."));
 

@@ -1,6 +1,7 @@
 #include "gui/client.hpp"
 #include "utils.hpp"
 #include "memory/memory.hpp"
+#include "hooks/hooks.hpp"
 #include <hacks/visuals_player.hpp>
 
 void Client::Render() {
