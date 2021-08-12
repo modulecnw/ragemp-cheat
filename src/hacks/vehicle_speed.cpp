@@ -18,6 +18,8 @@ std::string VehicleSpeed::getName()
 	return std::string("Speed");
 }
 
+float last_speed = 50;
+
 void VehicleSpeed::Tick()
 {
 	using namespace native;
@@ -40,14 +42,29 @@ void VehicleSpeed::Tick()
 			auto vehicle_ptr = functions::get_local()->vehicle();
 			if (!IsValidPtr(vehicle_ptr)) return;
 
-			Log::Debug("Gravity: ", vehicle_ptr->fGravity);
-			Log::Debug("fAcceleration: ", vehicle_ptr->handling()->fAcceleration);
-			Log::Debug("fDriveInertia: ", vehicle_ptr->handling()->fDriveInertia);
-			Log::Debug("fMass: ", vehicle_ptr->handling()->fMass);
-
 			if (GetAsyncKeyState(0x57)) {
-				if ((entity::get_entity_speed(vehicle) * 3.6) < 280)
+				auto rot = cam::get_gameplay_cam_rot(1);
+				auto pos = entity::get_entity_coords(vehicle, true);
+				auto speed = (entity::get_entity_speed(vehicle) * 3.6);
+
+				if (speed > 10) {
+					last_speed = speed;
+				}
+
+				entity::set_entity_rotation(vehicle, rot.x, rot.y, rot.z, 1, true);
+				float z = 0.0f;
+
+				if (gameplay::get_ground_z_for_3d_coord(pos.x, pos.y, pos.z, &z, false)) {
+					entity::set_entity_coords_no_offset(vehicle, pos.x, pos.y, z, false, false, false);
+				}
+
+
+				if (speed < 1) vehicle::set_vehicle_forward_speed(vehicle, last_speed);
 					entity::apply_force_to_entity(vehicle, 1, cam.x, cam.y, cam.z, 0, 0, 0, 1, 0, 1, 1, 1, 1);
+			}
+
+			if (GetAsyncKeyState(VK_SPACE)) {
+				entity::apply_force_to_entity(vehicle, 1, 0 + entity::get_entity_forward_x(vehicle), 0 + entity::get_entity_forward_y(vehicle), 7, 0, 0, 0, 1, 0, 1, 1, 1, 1);
 			}
 
 			if (GetAsyncKeyState(0x53)) {
