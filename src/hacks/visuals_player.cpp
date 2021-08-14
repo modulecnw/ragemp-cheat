@@ -86,6 +86,7 @@ void VisualsPlayer::Tick()
 			utils::render::draw_text(player_pos.x - (ImGui::CalcTextSize(player_name.c_str()).x / 2), player_pos.y + 23, player_name);
 		}
 
-		draw_bones(nPed->bones);
+		if (Config::Instance().visuals.player.skeleton)
+			draw_bones(nPed->bones);
 	}
 }

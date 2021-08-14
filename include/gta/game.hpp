@@ -886,6 +886,16 @@ enum IntersectOptions {
 	IntersectVegetation = 256
 };
 
+enum game_state_t
+{
+	playing,
+	intro,
+	unk,
+	license,
+	main_menu,
+	load_online
+};
+
 enum class thread_state_t : std::uint32_t
 {
 	idle,

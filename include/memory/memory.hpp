@@ -34,6 +34,7 @@ public:
 	fix_context_vector_t ptr_gta_fix_context_vector = nullptr;
 	fetch_native_handler_t ptr_gta_fetch_native_handler = nullptr;
 	pointer_to_handle_t ptr_gta_pointer_to_handle = nullptr;
+	game_state_t* ptr_gta_game_state = 0;
 	uintptr_t* ptr_gta_native_handler_table = 0;
 
 	CRagePool* ptr_rage037_pool = nullptr;
@@ -43,4 +44,5 @@ public:
 	ragemp_fetch_handler_t ptr_rageshared_fetch_handler = nullptr;
 
 	void Initialize();
+	void InitializeIngame();
 };

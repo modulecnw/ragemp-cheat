@@ -20,6 +20,7 @@ public:
 	void subtab(const char* label, const char* icon, int* selected, int index, int width = 100);
 
 	bool checkbox(const char* label, bool* value, const char* desc = "");
+	bool checkbox(std::string label_str, bool* value, const char* desc = "");
 
 	bool shared_item(const char* author, const char* name, const char* lastEdit);
 
@@ -47,6 +48,7 @@ public:
 
 	void create_decorations();
 
+	bool button(std::string label_str, ImVec2 size_arg = { NULL, NULL }, ImGuiButtonFlags flags = NULL);
 	bool button(const char* label, ImVec2 size_arg = { NULL, NULL }, ImGuiButtonFlags flags = NULL);
 	void help_marker(const char* desc, bool sameline, float sl_d);
 

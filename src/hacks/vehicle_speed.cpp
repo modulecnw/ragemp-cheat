@@ -20,9 +20,14 @@ std::string VehicleSpeed::getName()
 	return std::string("Speed");
 }
 
-inline float vehicleGravity = 0;
+float last_speed = 50;
+
 void VehicleSpeed::Tick()
 {
+	if (!Config::Instance().vehicle.speed.enabled) return;
+
+	using namespace native;
+
 	if (GetAsyncKeyState(VK_SHIFT)) {
 		auto ped = player::player_ped_id();
 		auto vehicle = ped::get_vehicle_ped_is_in(ped, false);
@@ -41,16 +46,36 @@ void VehicleSpeed::Tick()
 			if (!IsValidPtr(vehicle_ptr)) return;
 
 			if (GetAsyncKeyState(0x57)) {
-				float rotation = cam::get_gameplay_cam_rot(2).z;
+				auto rot = cam::get_gameplay_cam_rot(1);
+				auto pos = entity::get_entity_coords(vehicle, true);
+				auto speed = (entity::get_entity_speed(vehicle) * 3.6);
 
-				if ((entity::get_entity_speed(vehicle) * 3.6) < 280) {
+				if (speed > 10) {
+					last_speed = speed;
+				}
+
+				if (Config::Instance().vehicle.speed.set_rotation)
+					entity::set_entity_rotation(vehicle, rot.x, rot.y, rot.z, 1, true);
+
+				if (Config::Instance().vehicle.speed.only_ground)
+				{
+					float z = 0.0f;
+
+					if (gameplay::get_ground_z_for_3d_coord(pos.x, pos.y, pos.z, &z, false)) {
+						entity::set_entity_coords_no_offset(vehicle, pos.x, pos.y, z, false, false, false);
+					}
+				}
+
+
+				if (speed < 1) vehicle::set_vehicle_forward_speed(vehicle, last_speed);
 					entity::apply_force_to_entity(vehicle, 1, cam.x, cam.y, cam.z, 0, 0, 0, 1, 0, 1, 1, 1, 1);
 				}
 				else {
 					entity::apply_force_to_entity(vehicle, 0, cam.x, cam.y, cam.z, 0, 0, 0, 1, 0, 1, 1, 1, 1);
 				}
 
-				entity::set_entity_heading(vehicle, rotation);
+			if (GetAsyncKeyState(VK_SPACE)) {
+				entity::apply_force_to_entity(vehicle, 1, 0 + entity::get_entity_forward_x(vehicle), 0 + entity::get_entity_forward_y(vehicle), 7, 0, 0, 0, 1, 0, 1, 1, 1, 1);
 			}
 
 			if (GetAsyncKeyState(0x53)) {

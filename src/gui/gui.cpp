@@ -3,11 +3,16 @@
 #include "gui/gui.hpp"
 #include "config.hpp"
 #include "memory/memory.hpp"
+#include "gta/tick.hpp"
+#include "gta/natives/database.hpp"
+#include "hooks/hooks.hpp"
 
 // elements ui
 //const char* player_esp_box[] = { ("None"), ("2D"), ("3D") };
 //const char* player_esp_health_type[] = { ("HP-Bar Right"), ("HP-Bar Top"), ("Percent"), ("Value") };
 //const char* visual_font_type[] = { ("Text"), ("Icon") };
+
+#define run_as_native(x) tick::thread_invoker::queue([=] { x; } );
 
 void Gui::create_styles()
 {
@@ -195,6 +200,7 @@ void Gui::create_tabs()
 			c_menu_elements::Instance().subtab(_xor_("Silent-Aim").c_str(), (const char*)ICON_FA_RADIATION_ALT, &this->window_subtab_aiming, 3);
 			*/break;
 		case 3:
+			c_menu_elements::Instance().subtab(_xor_("Vehicle Options").c_str(), (const char*)ICON_FA_CAR, &this->window_subtab_misc, 0);
 			/*c_menu_elements::Instance().subtab(_xor_("Main").c_str(), (const char*)ICON_FA_USERS, &this->window_subtab_misc, 0);
 			imsl;
 			c_menu_elements::Instance().subtab(_xor_("Player list").c_str(), (const char*)ICON_FA_USERS, &this->window_subtab_misc, 1);
@@ -237,14 +243,21 @@ void render_home() {
 
 	if (Gui::Instance().window_subtab_home == 0) {
 		ImGui::BeginGroup();
-		c_menu_elements::Instance().beginchild("HOME_CHILD_1", { 550, 285 });
+		c_menu_elements::Instance().beginchild(_xor_("HOME_CHILD_1").c_str(), { 550, 285 });
 		{
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
 			{
-				ImGui::Text("Welcome to Nemo.");
-				ImGui::Text("Make sure that you own a valid license for this cheat.");
-				ImGui::Text("Otherwise you may get flagged by anti-cheat on big servers.");
+				if (!Hooks::Instance().MH_Initialized)
+				{
+					ImGui::Text(_xor_("Loading nemo:V Multiplayer...").c_str());
+				}
+				else
+				{
+					ImGui::Text(_xor_("Welcome to nemo:V").c_str());
+					ImGui::Text(_xor_("Make sure that you own a valid license for this cheat.").c_str());
+					ImGui::Text(_xor_("Otherwise you may get flagged by anti-cheat on big servers.").c_str());
+				}
 			}
 			ImGui::EndGroup();
 		}
@@ -263,25 +276,25 @@ void render_visuals()
 
 		ImGui::BeginGroup();
 		ImGui::Text("Player ESP");
-		c_menu_elements::Instance().beginchild("side2zon2e2", { 250, 75 });
+		c_menu_elements::Instance().beginchild(_xor_("side2zon2e2").c_str(), { 250, 75 });
 		{
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
 			{
-				ui->checkbox(("Enabled"), &Config::Instance().visuals.player.enabled);
+				ui->checkbox(_xor_("Enabled"), &Config::Instance().visuals.player.enabled);
 			}
 			ImGui::EndGroup();
 		}
 		c_menu_elements::Instance().endchild();
 
 		ImGui::Text("Components");
-		c_menu_elements::Instance().beginchild("side2zon2e222", { 250, 275 });
+		c_menu_elements::Instance().beginchild(_xor_("side2zon2e222").c_str(), { 250, 275 });
 		{
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
 			{
 
-				ui->checkbox(("Show Skeleton"), &Config::Instance().visuals.player.skeleton);
+				ui->checkbox(_xor_("Show Skeleton"), &Config::Instance().visuals.player.skeleton);
 
 				//ui->combo(("Box-Type"), &Config.visuals.players.box, player_esp_box, 3);
 
@@ -298,42 +311,42 @@ void render_visuals()
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
-		ImGui::Text("Skeleton");
-		c_menu_elements::Instance().beginchild("sidezo2n51277e2", { 460, 268 });
+		ImGui::Text(_xor_("Skeleton").c_str());
+		c_menu_elements::Instance().beginchild(_xor_("sidezo2n51277e2").c_str(), { 460, 268 });
 		{
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
 			{
-				ui->checkbox(("HEAD"), &Config::Instance().visuals.player.active_skeletons.HEAD); ImGui::SameLine();
-				ui->checkbox(("NECK"), &Config::Instance().visuals.player.active_skeletons.NECK); ImGui::SameLine();
-				ui->checkbox(("RIGHT_HAND"), &Config::Instance().visuals.player.active_skeletons.RIGHT_HAND);
-				ui->checkbox(("RIGHT_FOREARM"), &Config::Instance().visuals.player.active_skeletons.RIGHT_FOREARM); ImGui::SameLine();
-				ui->checkbox(("RIGHT_UPPER_ARM"), &Config::Instance().visuals.player.active_skeletons.RIGHT_UPPER_ARM); ImGui::SameLine();
-				ui->checkbox(("RIGHT_CLAVICLE"), &Config::Instance().visuals.player.active_skeletons.RIGHT_CLAVICLE);
-				ui->checkbox(("LEFT_HAND"), &Config::Instance().visuals.player.active_skeletons.LEFT_HAND); ImGui::SameLine();
-				ui->checkbox(("LEFT_FOREARM"), &Config::Instance().visuals.player.active_skeletons.LEFT_FOREARM); ImGui::SameLine();
-				ui->checkbox(("LEFT_UPPER_ARM"), &Config::Instance().visuals.player.active_skeletons.LEFT_UPPER_ARM);
-				ui->checkbox(("LEFT_CLAVICLE"), &Config::Instance().visuals.player.active_skeletons.LEFT_CLAVICLE); ImGui::SameLine();
-				ui->checkbox(("PELVIS"), &Config::Instance().visuals.player.active_skeletons.PELVIS); ImGui::SameLine();
-				ui->checkbox(("SPINE_ROOT"), &Config::Instance().visuals.player.active_skeletons.SPINE_ROOT);
-				ui->checkbox(("SPINE0"), &Config::Instance().visuals.player.active_skeletons.SPINE0); ImGui::SameLine();
-				ui->checkbox(("SPINE1"), &Config::Instance().visuals.player.active_skeletons.SPINE1); ImGui::SameLine();
-				ui->checkbox(("SPINE2"), &Config::Instance().visuals.player.active_skeletons.SPINE2);
-				ui->checkbox(("SPINE3"), &Config::Instance().visuals.player.active_skeletons.SPINE3); ImGui::SameLine();
-				ui->checkbox(("RIGHT_TOE"), &Config::Instance().visuals.player.active_skeletons.RIGHT_TOE); ImGui::SameLine();
-				ui->checkbox(("RIGHT_FOOT"), &Config::Instance().visuals.player.active_skeletons.RIGHT_FOOT);
-				ui->checkbox(("RIGHT_CALF"), &Config::Instance().visuals.player.active_skeletons.RIGHT_CALF); ImGui::SameLine();
-				ui->checkbox(("RIGHT_THIGH"), &Config::Instance().visuals.player.active_skeletons.RIGHT_THIGH); ImGui::SameLine();
-				ui->checkbox(("LEFT_TOE"), &Config::Instance().visuals.player.active_skeletons.LEFT_TOE);
-				ui->checkbox(("LEFT_FOOT"), &Config::Instance().visuals.player.active_skeletons.LEFT_FOOT); ImGui::SameLine();
-				ui->checkbox(("LEFT_CALF"), &Config::Instance().visuals.player.active_skeletons.LEFT_CALF); ImGui::SameLine();
-				ui->checkbox(("LEFT_THIGH"), &Config::Instance().visuals.player.active_skeletons.LEFT_THIGH);
+				ui->checkbox(_xor_("HEAD"), &Config::Instance().visuals.player.active_skeletons.HEAD); ImGui::SameLine();
+				ui->checkbox(_xor_("NECK"), &Config::Instance().visuals.player.active_skeletons.NECK); ImGui::SameLine();
+				ui->checkbox(_xor_("RIGHT_HAND"), &Config::Instance().visuals.player.active_skeletons.RIGHT_HAND);
+				ui->checkbox(_xor_("RIGHT_FOREARM"), &Config::Instance().visuals.player.active_skeletons.RIGHT_FOREARM); ImGui::SameLine();
+				ui->checkbox(_xor_("RIGHT_UPPER_ARM"), &Config::Instance().visuals.player.active_skeletons.RIGHT_UPPER_ARM); ImGui::SameLine();
+				ui->checkbox(_xor_("RIGHT_CLAVICLE"), &Config::Instance().visuals.player.active_skeletons.RIGHT_CLAVICLE);
+				ui->checkbox(_xor_("LEFT_HAND"), &Config::Instance().visuals.player.active_skeletons.LEFT_HAND); ImGui::SameLine();
+				ui->checkbox(_xor_("LEFT_FOREARM"), &Config::Instance().visuals.player.active_skeletons.LEFT_FOREARM); ImGui::SameLine();
+				ui->checkbox(_xor_("LEFT_UPPER_ARM"), &Config::Instance().visuals.player.active_skeletons.LEFT_UPPER_ARM);
+				ui->checkbox(_xor_("LEFT_CLAVICLE"), &Config::Instance().visuals.player.active_skeletons.LEFT_CLAVICLE); ImGui::SameLine();
+				ui->checkbox(_xor_("PELVIS"), &Config::Instance().visuals.player.active_skeletons.PELVIS); ImGui::SameLine();
+				ui->checkbox(_xor_("SPINE_ROOT"), &Config::Instance().visuals.player.active_skeletons.SPINE_ROOT);
+				ui->checkbox(_xor_("SPINE0"), &Config::Instance().visuals.player.active_skeletons.SPINE0); ImGui::SameLine();
+				ui->checkbox(_xor_("SPINE1"), &Config::Instance().visuals.player.active_skeletons.SPINE1); ImGui::SameLine();
+				ui->checkbox(_xor_("SPINE2"), &Config::Instance().visuals.player.active_skeletons.SPINE2);
+				ui->checkbox(_xor_("SPINE3"), &Config::Instance().visuals.player.active_skeletons.SPINE3); ImGui::SameLine();
+				ui->checkbox(_xor_("RIGHT_TOE"), &Config::Instance().visuals.player.active_skeletons.RIGHT_TOE); ImGui::SameLine();
+				ui->checkbox(_xor_("RIGHT_FOOT"), &Config::Instance().visuals.player.active_skeletons.RIGHT_FOOT);
+				ui->checkbox(_xor_("RIGHT_CALF"), &Config::Instance().visuals.player.active_skeletons.RIGHT_CALF); ImGui::SameLine();
+				ui->checkbox(_xor_("RIGHT_THIGH"), &Config::Instance().visuals.player.active_skeletons.RIGHT_THIGH); ImGui::SameLine();
+				ui->checkbox(_xor_("LEFT_TOE"), &Config::Instance().visuals.player.active_skeletons.LEFT_TOE);
+				ui->checkbox(_xor_("LEFT_FOOT"), &Config::Instance().visuals.player.active_skeletons.LEFT_FOOT); ImGui::SameLine();
+				ui->checkbox(_xor_("LEFT_CALF"), &Config::Instance().visuals.player.active_skeletons.LEFT_CALF); ImGui::SameLine();
+				ui->checkbox(_xor_("LEFT_THIGH"), &Config::Instance().visuals.player.active_skeletons.LEFT_THIGH);
 			}
 			ImGui::EndGroup();
 		}
 		c_menu_elements::Instance().endchild();
-		ImGui::Text("Skeleton");
-		c_menu_elements::Instance().beginchild("sidezo2n5127dfg7e2", { 460, 55 });
+		ImGui::Text(_xor_("Skeleton").c_str());
+		c_menu_elements::Instance().beginchild(_xor_("sidezo2n5127dfg7e2").c_str(), { 460, 55 });
 		{
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
@@ -350,8 +363,8 @@ void render_visuals()
 	else if (Gui::Instance().window_subtab_visuals == 1)
 	{
 		ImGui::BeginGroup();
-		ImGui::Text("Vehicle ESP");
-		c_menu_elements::Instance().beginchild("side2zon2e2", { 250, 45 });
+		ImGui::Text(_xor_("Vehicle ESP").c_str());
+		c_menu_elements::Instance().beginchild(_xor_("side2zon2e2").c_str(), { 250, 45 });
 		{
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
@@ -362,8 +375,8 @@ void render_visuals()
 		}
 		c_menu_elements::Instance().endchild();
 
-		ImGui::Text("Components");
-		c_menu_elements::Instance().beginchild("side2zon2e222", { 250, 285 });
+		ImGui::Text(_xor_("Components").c_str());
+		c_menu_elements::Instance().beginchild(_xor_("side2zon2e222").c_str(), { 250, 285 });
 		{
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
@@ -387,16 +400,79 @@ void render_visuals()
 	}
 }
 
+void render_misc()
+{
+	c_menu_elements* ui =
+		&c_menu_elements::Instance();
+
+	using namespace native;
+
+	if (Gui::Instance().window_subtab_misc == 0)
+	{
+
+		ImGui::BeginGroup();
+		ImGui::Text(_xor_("Vehicle Speed").c_str());
+		c_menu_elements::Instance().beginchild(_xor_("side2zon2e233").c_str(), { 250, 150 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+				ui->checkbox(_xor_("Enabled").c_str(), &Config::Instance().vehicle.speed.enabled);
+				ui->checkbox(_xor_("Only Ground"), &Config::Instance().vehicle.speed.only_ground);
+				ui->checkbox(_xor_("Set Rotation"), &Config::Instance().vehicle.speed.set_rotation);
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+
+		ImGui::Text(_xor_("Vehicle Options").c_str());
+		c_menu_elements::Instance().beginchild(_xor_("sidezone34342").c_str(), { 250, 200 });
+		{
+			ImGui::SetCursorPos({ 10,10 });
+			ImGui::BeginGroup();
+			{
+				ui->checkbox(_xor_("Autorepair").c_str(), &Config::Instance().vehicle.auto_repair);
+				if (ui->button(_xor_("Repair Vehicle"), { 100, 30 }))
+				{
+					tick::thread_invoker::queue([]
+						{
+							auto ped = player::player_ped_id();
+							if (ped::is_ped_in_any_vehicle(ped, false))
+								vehicle::set_vehicle_fixed(ped::get_vehicle_ped_is_using(ped));
+						}
+					);
+				}
+				if (ui->button(_xor_("Start Engine"), { 100, 30 }))
+				{
+					tick::thread_invoker::queue([]
+						{
+							auto ped = player::player_ped_id();
+							if (ped::is_ped_in_any_vehicle(ped, false))
+								vehicle::set_vehicle_engine_on(ped::get_vehicle_ped_is_using(ped), true, true, false);
+						}
+					);
+				}
+			}
+			ImGui::EndGroup();
+		}
+		c_menu_elements::Instance().endchild();
+
+		ImGui::EndGroup();
+	}
+}
+
 
 void Gui::create_items()
 {
 	ImGui::SetCursorPos({ 27, 98 });
-	ImGui::BeginChild("MainContent", { 800, 402 }, false, ImGuiWindowFlags_NoBackground);
+	ImGui::BeginChild(_xor_("MainContent").c_str(), { 800, 402 }, false, ImGuiWindowFlags_NoBackground);
 	{
 		switch (this->window_tab)
 		{
 			case 0: render_home(); break;
 			case 1: render_visuals(); break;
+			//case 3: break;
+			case 3: render_misc(); break;
 				/*case 2: render_aimings(); break;
 			case 3: render_misc(); break;
 			case 4: render_config(); break;
@@ -413,7 +489,7 @@ const std::string current_time() {
 	struct tm tstruct;
 	char buf[80];
 	tstruct = *localtime(&now);
-	strftime(buf, sizeof(buf), "%H:%M:%S %P", &tstruct);
+	strftime(buf, sizeof(buf), _xor_("%H:%M:%S %P").c_str(), &tstruct);
 	return buf;
 }
 
@@ -450,6 +526,31 @@ void Gui::pre_init() {
 
 void Gui::init()
 {
+	Config::Instance().visuals.player.active_skeletons.HEAD = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_CALF = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_CLAVICLE = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_FOOT = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_FOREARM = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_HAND = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_THIGH = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_TOE = true;
+	Config::Instance().visuals.player.active_skeletons.LEFT_UPPER_ARM = true;
+	Config::Instance().visuals.player.active_skeletons.NECK = true;
+	Config::Instance().visuals.player.active_skeletons.PELVIS = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_CALF = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_CLAVICLE = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_FOOT = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_FOREARM = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_HAND = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_THIGH = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_TOE = true;
+	Config::Instance().visuals.player.active_skeletons.RIGHT_UPPER_ARM = true;
+	Config::Instance().visuals.player.active_skeletons.SPINE0 = true;
+	Config::Instance().visuals.player.active_skeletons.SPINE1 = true;
+	Config::Instance().visuals.player.active_skeletons.SPINE2 = true;
+	Config::Instance().visuals.player.active_skeletons.SPINE3 = true;
+	Config::Instance().visuals.player.active_skeletons.SPINE_ROOT = true;
+
 	if (this->bMenuOpen) {
 		auto new_alpha = ImGui::GetStyle().Alpha + (0.1 * (60 / ImGui::GetIO().Framerate));
 		if (new_alpha >= 1) ImGui::GetStyle().Alpha = 1;
@@ -470,7 +571,7 @@ void Gui::init()
 
 	ImGui::SetNextWindowSize(ImVec2(850, 540), ImGuiCond_Once);
 
-	if (ImGui::Begin("nemoSDK", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+	if (ImGui::Begin(_xor_("nemoSDK").c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
 		this->window_position = ImGui::GetWindowPos();
 		this->draw_list = ImGui::GetWindowDrawList();
 

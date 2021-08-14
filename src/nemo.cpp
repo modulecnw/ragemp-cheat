@@ -18,8 +18,12 @@ void Nemo::Run(HMODULE hModule)
 
 void Nemo::Shutdown()
 {
-	MH_DisableHook(MH_ALL_HOOKS);
-	MH_Uninitialize();
+
+	if (Hooks::Instance().MH_Initialized)
+	{
+		MH_DisableHook(MH_ALL_HOOKS);
+		MH_Uninitialize();
+	}
 	
 	Hooks::Instance().vthDirectHook->detach(8);
 	Hooks::Instance().vthDirectHook->disable();

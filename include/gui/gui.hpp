@@ -38,7 +38,7 @@ public:
 
 	bool theme = false;
 
-	bool bMenuOpen = false;
+	bool bMenuOpen = true;
 
 	void create_styles();
 	void create_decorations();

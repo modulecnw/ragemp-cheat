@@ -10,6 +10,21 @@ public:
 		bool noclip = false;
 	} self;
 
+	struct Vehicle {
+		bool auto_repair = false;
+	
+		struct Speed {
+			bool enabled = false;
+			bool set_rotation = false;
+			bool only_ground = false;
+		} speed;
+
+		struct Fly {
+			bool enabled = false;
+			bool set_rotation = false;
+		} fly;
+	} vehicle;
+
     struct Visuals {
         struct Players {
             bool enabled = true;
