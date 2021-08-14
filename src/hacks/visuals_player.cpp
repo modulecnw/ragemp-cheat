@@ -82,7 +82,6 @@ void VisualsPlayer::Tick()
 
 		if (Memory::Instance().multiplayer_framework == MultiplayerFrameworks::RAGEMP_037) {
 			std::string player_name = functions::get_name_from_index(player->iHandle);
-			Log::Info(player_name);
 			utils::render::draw_text(player_pos.x - (ImGui::CalcTextSize(player_name.c_str()).x / 2), player_pos.y + 23, player_name);
 		}
 
