@@ -248,16 +248,9 @@ void render_home() {
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
 			{
-				if (!Hooks::Instance().MH_Initialized)
-				{
-					ImGui::Text(_xor_("Loading nemo:V Multiplayer...").c_str());
-				}
-				else
-				{
-					ImGui::Text(_xor_("Welcome to nemo:V").c_str());
-					ImGui::Text(_xor_("Make sure that you own a valid license for this cheat.").c_str());
-					ImGui::Text(_xor_("Otherwise you may get flagged by anti-cheat on big servers.").c_str());
-				}
+				ImGui::Text(_xor_("Welcome to nemo:V").c_str());
+				ImGui::Text(_xor_("Make sure that you own a valid license for this cheat.").c_str());
+				ImGui::Text(_xor_("Otherwise you may get flagged by anti-cheat on big servers.").c_str());
 			}
 			ImGui::EndGroup();
 		}

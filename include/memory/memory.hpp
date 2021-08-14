@@ -44,5 +44,4 @@ public:
 	ragemp_fetch_handler_t ptr_rageshared_fetch_handler = nullptr;
 
 	void Initialize();
-	void InitializeIngame();
 };

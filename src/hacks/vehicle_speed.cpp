@@ -20,7 +20,8 @@ std::string VehicleSpeed::getName()
 	return std::string("Speed");
 }
 
-float last_speed = 50;
+inline float last_speed = 50;
+inline float vehicleGravity = 0;
 
 void VehicleSpeed::Tick()
 {

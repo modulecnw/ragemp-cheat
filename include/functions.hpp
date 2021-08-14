@@ -98,7 +98,7 @@ namespace functions {
 		const char* result;
 		if (i < std::size(ragemp::ragemp_player_shift)) {
 			auto id = ~__ROR2__(i + ((0x0 - 0x198) & 0x3FF), 8);
-			result = reinterpret_cast<std::string>(Memory::Instance().ptr_rage037_get_rage_name(Memory::Instance().ptr_rage037_get_name_verify(), ragemp::ragemp_player_shift[(WORD)id]));
+			result = reinterpret_cast<const char*>(Memory::Instance().ptr_rage037_get_rage_name(Memory::Instance().ptr_rage037_get_name_verify(), ragemp::ragemp_player_shift[(WORD)id]));
 			return result;
 		}
 

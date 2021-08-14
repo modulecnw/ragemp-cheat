@@ -168,7 +168,7 @@ bool c_menu_elements::button(const char* label, ImVec2 size_arg, ImGuiButtonFlag
 
 void c_menu_elements::tab(const char* label, int* value, int index)
 {
-	if (!Hooks::Instance().MH_Initialized && index > 0) return;
+	if (index > 0) return;
 
 	ImGuiContext& g = *GImGui;
 	ImVec2 p = ImGui::GetCursorScreenPos();

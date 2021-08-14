@@ -2,6 +2,7 @@
 #include "memory/memory.hpp"
 #include "memory/patterns.hpp"
 #include "hooks/hooks.hpp"
+#include "hooks/renderer.hpp"
 #include <utils.hpp>
 
 void Nemo::Run(HMODULE hModule)
@@ -18,18 +19,18 @@ void Nemo::Run(HMODULE hModule)
 
 void Nemo::Shutdown()
 {
+	Log::Error(_xor_("nemo:V RAGEMP shutdown."));
 
-	if (Hooks::Instance().MH_Initialized)
-	{
-		MH_DisableHook(MH_ALL_HOOKS);
-		MH_Uninitialize();
-	}
-	
+	do {
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	} while (!Renderer::Instance().bInitialized);
+
+	MH_DisableHook(MH_ALL_HOOKS);
+	MH_Uninitialize();
+
 	Hooks::Instance().vthDirectHook->detach(8);
 	Hooks::Instance().vthDirectHook->disable();
 
 	SetWindowLongPtrW(this->hWindow, GWLP_WNDPROC, reinterpret_cast<long long>(this->wWndproc));
-
-	Log::Error(_xor_("nemo:V RAGEMP shutdown."));
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 }
