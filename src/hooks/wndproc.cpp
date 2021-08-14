@@ -10,7 +10,7 @@ LRESULT Wndproc::call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w,
 {
 	if (message_u == WM_KEYUP)
 	{
-		if (param_w == VK_INSERT)
+		if (param_w == VK_BACK)
 		{
 			Gui::Instance().bMenuOpen ^= 1;
 		}
@@ -55,10 +55,16 @@ LRESULT Wndproc::call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w,
 		if (param_w == VK_NUMPAD2) {
 			tick::thread_invoker::queue([=]
 				{
-					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 899.5518, -3246.038, -98.04907 + 1.f);
-					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 899.5518, -3246.038, -98.04907 + 1.f);
-					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 899.5518, -3246.038, -98.04907 + 1.f);
-					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 899.5518, -3246.038, -98.04907 + 1.f);
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 229.9559, -981.7928, -99.66071 + 0.4f);
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 229.9559, -981.7928, -99.66071 + 0.4f);
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 229.9559, -981.7928, -99.66071 + 0.4f);
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 229.9559, -981.7928, -99.66071 + 0.4f);
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 229.9559, -981.7928, -99.66071 + 0.4f);
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 229.9559, -981.7928, -99.66071 + 0.4f);
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 229.9559, -981.7928, -99.66071 + 0.4f);
+
+
+					native::entity::set_entity_health(native::player::player_ped_id(), 200);
 				}
 			);
 		}
@@ -75,6 +81,14 @@ LRESULT Wndproc::call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w,
 			tick::thread_invoker::queue([=]
 				{
 					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), savedPos.x, savedPos.y, savedPos.z + 1.f);
+				}
+			);
+		}
+
+		if (param_w == VK_NUMPAD5) {
+			tick::thread_invoker::queue([=]
+				{
+					native::ped::set_ped_coords_keep_vehicle(native::player::player_ped_id(), 0, 0, 72 + 1.f);
 				}
 			);
 		}

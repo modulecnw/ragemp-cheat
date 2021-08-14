@@ -3,6 +3,7 @@
 #include "hacks/replayinterface.hpp"
 #include "hacks/noclip.hpp"
 #include "hacks/vehicle_speed.hpp"
+#include "hacks/vehicle_fly.hpp"
 #include <memory.h>
 
 void on_native_thread() {

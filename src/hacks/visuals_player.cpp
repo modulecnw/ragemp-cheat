@@ -70,7 +70,7 @@ void VisualsPlayer::Tick()
 		if (!IsValidPtr(nPed) || !IsValidPtr(nPed->ped) || !IsValidPtr(nPed->player)) continue;
 
 		CObject* ped = nPed->ped;
-		if (ped == NULL || !IsValidPtr(ped) || Memory::Instance().ptr_gta_world_factory->world->getLocalPlayer() == ped) continue;
+		if (ped == NULL || !IsValidPtr(ped)) continue;
 
 		CRemotePlayer* player = nPed->player;
 		if (player == NULL || !IsValidPtr(player)) continue;
@@ -80,8 +80,11 @@ void VisualsPlayer::Tick()
 		//int fontSize = 18 - dif <= 2 ? 2 : (18 - dif);
 		Vector2 player_pos = functions::world_to_screen_vec(ped->fPosition);
 
-		std::string player_name = functions::get_name_from_index(player->iHandle);
-		utils::render::draw_text(player_pos.x - (ImGui::CalcTextSize(player_name.c_str()).x / 2), player_pos.y + 23, functions::get_name_from_index(player->iHandle));
+		if (Memory::Instance().multiplayer_framework == MultiplayerFrameworks::RAGEMP_037) {
+			std::string player_name = functions::get_name_from_index(player->iHandle);
+			Log::Info(player_name);
+			utils::render::draw_text(player_pos.x - (ImGui::CalcTextSize(player_name.c_str()).x / 2), player_pos.y + 23, player_name);
+		}
 
 		draw_bones(nPed->bones);
 	}

@@ -24,9 +24,9 @@ void Memory::Initialize() {
 	this->ptr_gta_pointer_to_handle			= memory::find_pattern<pointer_to_handle_t>(this->gta5_module, _xor_("PointerToHandle"), Patterns::Instance().pattern_gta_pointer_to_handle);
 
 	if(this->multiplayer_framework == MultiplayerFrameworks::RAGEMP_037) {
-		this->ptr_rage037_pool					= *memory::as_relative<CRagePool**>(memory::find_pattern(this->ragemp_module, _xor_("Rage Replayinterface"), Patterns::Instance().pattern_rage037_replayinterface));
-		this->ptr_rage037_get_rage_name			= memory::find_pattern<get_rage_name_t>(this->ragemp_module, _xor_("Rage GetName"), Patterns::Instance().pattern_rage037_get_name);
-		this->ptr_rage037_get_name_verify		= memory::find_pattern<get_name_verify_t>(this->ragemp_module, _xor_("Rage GetNameVerify"), Patterns::Instance().pattern_rage037_get_name_verify);
+		this->ptr_rage037_pool				= *memory::as_relative<CRagePool**>(memory::find_pattern(this->ragemp_module, _xor_("Rage Replayinterface"), Patterns::Instance().pattern_rage037_replayinterface));
+		this->ptr_rage037_get_rage_name		= memory::find_pattern<get_rage_name_t>(this->ragemp_module, _xor_("Rage GetName"), Patterns::Instance().pattern_rage037_get_name);
+		this->ptr_rage037_get_name_verify	= memory::find_pattern<get_name_verify_t>(this->ragemp_module, _xor_("Rage GetNameVerify"), Patterns::Instance().pattern_rage037_get_name_verify);
 	}
 
 	this->ptr_rageshared_fetch_handler		= memory::as_relative<ragemp_fetch_handler_t>(memory::find_pattern(this->ragemp_module, _xor_("Rage FetchHandler"), Patterns::Instance().pattern_rageshared_fetch_handler), 1);

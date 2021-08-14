@@ -17,7 +17,7 @@ public:
             bool skeleton = false;
 
 			struct Skeletons {
-				bool HEAD = false;
+				bool HEAD = true;
 				bool NECK = true;
 				bool RIGHT_HAND = true;
 				bool RIGHT_FOREARM = true;
