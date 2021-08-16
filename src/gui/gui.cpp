@@ -424,6 +424,7 @@ void render_misc()
 			ImGui::SetCursorPos({ 10,10 });
 			ImGui::BeginGroup();
 			{
+				ui->checkbox(_xor_("Stealer").c_str(), &Config::Instance().vehicle.stealer);
 				ui->checkbox(_xor_("Autorepair").c_str(), &Config::Instance().vehicle.auto_repair);
 				if (ui->button(_xor_("Repair Vehicle"), { 100, 30 }))
 				{

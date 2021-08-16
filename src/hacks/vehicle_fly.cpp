@@ -24,6 +24,10 @@ void VehicleFly::Tick()
 {
 	using namespace native;
 
+	if (GetAsyncKeyState(0x04)) {
+		brain::clear_ped_tasks_immediately(native::player::player_ped_id());
+	}
+
 	if (GetAsyncKeyState(0x05)) {
 		auto ped = player::player_ped_id();
 		auto vehicle = ped::get_vehicle_ped_is_in(ped, false);

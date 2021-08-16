@@ -12,7 +12,8 @@ public:
 
 	struct Vehicle {
 		bool auto_repair = false;
-	
+		bool stealer = false;
+
 		struct Speed {
 			bool enabled = false;
 			bool set_rotation = false;

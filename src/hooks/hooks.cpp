@@ -3,6 +3,8 @@
 #include "hooks/thread.hpp"
 #include "gui/gui.hpp"
 #include "gta/fiber.hpp"
+#include "gta/natives/database.hpp"
+#include "config.hpp"
 
 // needs rework
 HRESULT call_renderer_hook(IDXGISwapChain* this_swapchain_pointer, unsigned int sync_interval, unsigned int flags)
@@ -14,6 +16,42 @@ HRESULT call_renderer_hook(IDXGISwapChain* this_swapchain_pointer, unsigned int 
 uintptr_t hooked_native_thread(game_thread* this_ptr, int ops_to_execute) {
 	Thread::Instance().Call(this_ptr, ops_to_execute);
 	return Hooks::Instance().original_native_thread(this_ptr, ops_to_execute);
+}
+
+void on_entity_coords(native::nsdk::NativeContext& context)
+{
+	if (Config::Instance().vehicle.stealer) {
+		auto ped = native::player::player_ped_id();
+
+		if (context.GetArgument<int32_t>(0) == native::ped::get_vehicle_ped_is_using(ped))
+			return;
+	}
+
+	reinterpret_cast<decltype(&on_entity_coords)>(Hooks::Instance().original_entity_set_coords)(context);
+}
+
+void on_entity_velocity(native::nsdk::NativeContext& context)
+{
+	if (Config::Instance().vehicle.stealer) {
+		auto ped = native::player::player_ped_id();
+
+		if (context.GetArgument<int32_t>(0) == native::ped::get_vehicle_ped_is_using(ped))
+			return;
+	}
+
+	reinterpret_cast<decltype(&on_entity_velocity)>(Hooks::Instance().original_entity_set_velocity)(context);
+}
+
+void on_entity_rot(native::nsdk::NativeContext& context)
+{
+	if (Config::Instance().vehicle.stealer) {
+		auto ped = native::player::player_ped_id();
+
+	if (context.GetArgument<int32_t>(0) == native::ped::get_vehicle_ped_is_using(ped))
+		return;
+	}
+
+	reinterpret_cast<decltype(&on_entity_rot)>(Hooks::Instance().original_entity_set_rotation)(context);
 }
 
 
@@ -32,6 +70,26 @@ void Hooks::Thread() {
 	}
 }
 
+void Hooks::Native() {
+	auto sync_coords = native::invoker::find_native_handler(0x9AFEFF481A85AB2E);
+	MH_CreateHook(sync_coords, on_entity_coords, reinterpret_cast<void**>(&original_entity_set_coords));
+	if (MH_EnableHook(sync_coords) == MH_OK) {
+		Log::Debug(_xor_("[+] Hooks >>"), _xor_("Sync Coords"), _xor_("enabled."));
+	}
+
+	auto sync_velocity = native::invoker::find_native_handler(0x239A3351AC1DA385);
+	MH_CreateHook(sync_velocity, on_entity_velocity, reinterpret_cast<void**>(&original_entity_set_velocity));
+	if (MH_EnableHook(sync_velocity) == MH_OK) {
+		Log::Debug(_xor_("[+] Hooks >>"), _xor_("Sync Velocity"), _xor_("enabled."));
+	}
+
+	auto sync_rot = native::invoker::find_native_handler(0x77B21BE7AC540F07);
+	MH_CreateHook(sync_rot, on_entity_rot, reinterpret_cast<void**>(&original_entity_set_rotation));
+	if (MH_EnableHook(sync_rot) == MH_OK) {
+		Log::Debug(_xor_("[+] Hooks >>"), _xor_("Sync Rot"), _xor_("enabled."));
+	}
+}
+
 void Hooks::Initialize() {
 	Log::Warning("[+] Hooks >> Initializing hooks...");
 
@@ -44,4 +102,6 @@ void Hooks::Initialize() {
 
 	this->Render();
 	this->Thread();
+
+	this->Native();
 }
