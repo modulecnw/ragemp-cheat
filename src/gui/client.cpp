@@ -3,9 +3,11 @@
 #include "memory/memory.hpp"
 #include "hooks/hooks.hpp"
 #include <hacks/visuals_player.hpp>
+#include <hacks/aimbot.hpp>
 
 void Client::Render() {
 	utils::render::draw_text(15, 15, "nemo:V");
 	
 	VisualsPlayer::Instance().Tick();
+	Aimbot::Instance().Tick();
 }

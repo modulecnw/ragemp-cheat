@@ -5,6 +5,16 @@ using namespace std;
 
 class Config : public Singleton<Config>
 {
+private:
+	struct StealedVehicle {
+		const char* stealed_vehicle = "";
+		Vector3 stealed_pos = Vector3(0, 0, 0);
+	};
+
+	struct RequestStealedVehicle {
+		const char* stealed_vehicle = "";
+		Vector3 stealed_pos = Vector3(0, 0, 0);
+	};
 public:
 	struct Self {
 		bool noclip = false;
@@ -13,6 +23,10 @@ public:
 	struct Vehicle {
 		bool auto_repair = false;
 		bool stealer = false;
+
+		bool want_steal = false;
+		StealedVehicle stealed_vehicle = { 0, Vector3() };
+		RequestStealedVehicle request_stealed_vehicle = { 0, Vector3() };
 
 		struct Speed {
 			bool enabled = false;
@@ -26,11 +40,22 @@ public:
 		} fly;
 	} vehicle;
 
-    struct Visuals {
-        struct Players {
-            bool enabled = true;
-            bool name = false;
-            bool skeleton = false;
+	struct Aimings {
+		struct Aimbot {
+			bool enabled = false;
+			bool showFOV = false;
+
+			int boneId = 0;
+			int aim_key = 0;
+			float fov = 90.0f;
+		} aimbot;
+	} aiming;
+
+	struct Visuals {
+		struct Players {
+			bool enabled = true;
+			bool name = false;
+			bool skeleton = false;
 
 			struct Skeletons {
 				bool HEAD = true;
@@ -58,6 +83,6 @@ public:
 				bool LEFT_CALF = true;
 				bool LEFT_THIGH = true;
 			} active_skeletons;
-        } player;
-    } visuals;
+		} player;
+	} visuals;
 };

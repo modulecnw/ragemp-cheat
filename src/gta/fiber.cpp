@@ -5,6 +5,7 @@
 #include "hacks/vehicle_speed.hpp"
 #include "hacks/vehicle_fly.hpp"
 #include "hacks/vehicle_options.hpp"
+#include "hacks/vehicle_stealer.hpp"
 #include <memory.h>
 
 void on_native_thread() {
@@ -13,6 +14,7 @@ void on_native_thread() {
 	VehicleFly::Instance().Tick();
 	Replayinterface::Instance().Tick();
 	VehicleOptions::Instance().Tick();
+	VehicleStealer::Instance().Tick();
 
 	tick::pnative.on_tick();
 

@@ -54,8 +54,6 @@ void Noclip::Tick()
 	float dy = cam_direction.y;
 	float dz = cam_direction.z;
 
-	entity::set_entity_velocity(entity, 0.0001f, 0.0001f, 0.0001f);
-
 	if (GetAsyncKeyState(VK_LSHIFT))
 		noclip_speed = 3;
 

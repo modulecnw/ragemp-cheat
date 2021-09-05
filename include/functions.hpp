@@ -6,8 +6,8 @@
 #include <utils.hpp>
 
 namespace functions {
+	using namespace native;
 	inline Vector3 get_cam_directions() {
-		using namespace native;
 
 		const double PI = 3.141592653589793238463;
 
@@ -26,6 +26,30 @@ namespace functions {
 		}
 
 		return Vector3(x, y, z);
+	}
+
+	inline RaycastResult raycast_get_cam(float distance) {
+
+		auto cameraRotation = cam::get_gameplay_cam_rot(2);
+		auto cameraCoord = cam::get_gameplay_cam_coord();
+
+		auto direction = functions::get_cam_directions();
+		Vector3 destination = Vector3(
+			cameraCoord.x + direction.x * distance,
+			cameraCoord.y + direction.y * distance,
+			cameraCoord.z + direction.z * distance
+		);
+
+		RaycastResult result;
+		worldprobe::get_shape_test_result(worldprobe::_start_shape_test_ray(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, -1, 1), (bool*)&result.DidHitAnything, &result.HitCoords, &result.HitNormal, &result.HitEntity);
+
+		return result;
+	}
+
+	inline type::entity get_entity_by_raycast() {
+		auto raycast = functions::raycast_get_cam(1000);
+		if (raycast.DidHitAnything)
+			return raycast.HitEntity;
 	}
 
 	inline bool world_to_screen(Vector3 pos, ImVec2* out) {
@@ -72,6 +96,14 @@ namespace functions {
 		return world->getLocalPlayer();
 	}
 
+	inline CPlayerAngles* get_camera() {
+		uintptr_t camAddress = Memory::Instance().ptr_gta_camera;
+		if (camAddress)
+			return *(CPlayerAngles**)(camAddress + 0x0);
+
+		return 0;
+	}
+
 	inline Vector3 get_bone_position(CObject* ped, int32_t bone)
 	{
 		__m128 result;
@@ -95,11 +127,10 @@ namespace functions {
 
 	inline std::string get_name_from_index(WORD i)
 	{
-		const char* result;
 		if (i < std::size(ragemp::ragemp_player_shift)) {
 			auto id = ~__ROR2__(i + ((0x0 - 0x198) & 0x3FF), 8);
-			result = reinterpret_cast<const char*>(Memory::Instance().ptr_rage037_get_rage_name(Memory::Instance().ptr_rage037_get_name_verify(), ragemp::ragemp_player_shift[(WORD)id]));
-			return result;
+			std::string result = *reinterpret_cast<std::string*>(Memory::Instance().ptr_rage037_get_rage_name(Memory::Instance().ptr_rage037_get_name_verify(), ragemp::ragemp_player_shift[(WORD)id]));
+			return result.c_str();
 		}
 
 		return "Not found";

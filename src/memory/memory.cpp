@@ -19,6 +19,7 @@ void Memory::Initialize() {
 	this->ptr_gta_script_thread_tick		= memory::find_pattern<script_thread_tick_t>(this->gta5_module, _xor_("ScriptThreadTick"), Patterns::Instance().pattern_gta_script_thread_tick, -0xB);
 	this->ptr_gta_world_factory				= memory::as_relative<CWorldFactory*>(memory::find_pattern(this->gta5_module, _xor_("WorldFactory"), Patterns::Instance().pattern_gta_world_factory, -11));
 	this->ptr_gta_viewport					= memory::as_relative<CViewPort*>(memory::find_pattern(this->gta5_module, _xor_("Viewport"), Patterns::Instance().pattern_gta_viewport));
+	this->ptr_gta_camera					= memory::as_relative<uintptr_t>(memory::find_pattern(this->gta5_module, _xor_("Camera"), Patterns::Instance().pattern_gta_camera));
 	this->ptr_gta_world_to_screen			= memory::find_pattern<world_to_screen_t>(this->gta5_module, _xor_("WorldToScreen"), Patterns::Instance().pattern_gta_world_to_screen, -65);
 	this->ptr_gta_get_bone_position			= memory::find_pattern<get_bone_position_t>(this->gta5_module, _xor_("GetBone"), Patterns::Instance().pattern_gta_get_bone_position, -16);
 	this->ptr_gta_fix_context_vector		= memory::find_pattern<fix_context_vector_t>(this->gta5_module, _xor_("FixContextVector"), Patterns::Instance().pattern_gta_fix_context_vector);

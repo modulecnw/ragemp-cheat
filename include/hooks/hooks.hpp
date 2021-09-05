@@ -17,6 +17,7 @@ public:
     uintptr_t original_entity_set_coords = 0;
     uintptr_t original_entity_set_rotation = 0;
     uintptr_t original_entity_set_velocity = 0;
+    uintptr_t original_entity_set_fire = 0;
 
     void Render();
     void Initialize();

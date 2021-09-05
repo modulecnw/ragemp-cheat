@@ -191,14 +191,14 @@ void Gui::create_tabs()
 			c_menu_elements::Instance().subtab(_xor_("Vehicle ESP").c_str(), (const char*)ICON_FA_CAR, &this->window_subtab_visuals, 1);
 			*/break;
 		case 2:
-			/*c_menu_elements::Instance().subtab(_xor_("Aimbot").c_str(), (const char*)ICON_FA_CROSSHAIRS, &this->window_subtab_aiming, 0);
-			imsl;
-			c_menu_elements::Instance().subtab(_xor_("Legit-Aim").c_str(), (const char*)ICON_FA_SHIELD_CROSS, &this->window_subtab_aiming, 1);
-			imsl;
-			c_menu_elements::Instance().subtab(_xor_("Aim-Correction").c_str(), (const char*)ICON_FA_CHART_LINE, &this->window_subtab_aiming, 2);
-			imsl;
-			c_menu_elements::Instance().subtab(_xor_("Silent-Aim").c_str(), (const char*)ICON_FA_RADIATION_ALT, &this->window_subtab_aiming, 3);
-			*/break;
+			c_menu_elements::Instance().subtab(_xor_("Aimbot").c_str(), (const char*)ICON_FA_CROSSHAIRS, &this->window_subtab_aiming, 0);
+			//imsl;
+			//c_menu_elements::Instance().subtab(_xor_("Legit-Aim").c_str(), (const char*)ICON_FA_SHIELD_CROSS, &this->window_subtab_aiming, 1);
+			//imsl;
+			//c_menu_elements::Instance().subtab(_xor_("Aim-Correction").c_str(), (const char*)ICON_FA_CHART_LINE, &this->window_subtab_aiming, 2);
+			//imsl;
+			//c_menu_elements::Instance().subtab(_xor_("Silent-Aim").c_str(), (const char*)ICON_FA_RADIATION_ALT, &this->window_subtab_aiming, 3);
+			break;
 		case 3:
 			c_menu_elements::Instance().subtab(_xor_("Vehicle Options").c_str(), (const char*)ICON_FA_CAR, &this->window_subtab_misc, 0);
 			/*c_menu_elements::Instance().subtab(_xor_("Main").c_str(), (const char*)ICON_FA_USERS, &this->window_subtab_misc, 0);
@@ -393,6 +393,45 @@ void render_visuals()
 	}
 }
 
+void render_aimings()
+{
+	c_menu_elements* ui =
+		&c_menu_elements::Instance();
+
+	/* AIMBOT */
+	ImGui::BeginGroup();
+	ImGui::Text("Aimbot");
+	c_menu_elements::Instance().beginchild("aimbot_sidezone_1", { 250, 45 });
+	{
+		ImGui::SetCursorPos({ 10,10 });
+		ImGui::BeginGroup();
+		{
+			ui->checkbox(("Enabled"), &Config::Instance().aiming.aimbot.enabled);
+		}
+		ImGui::EndGroup();
+	}
+	c_menu_elements::Instance().endchild();
+
+	ImGui::Text("Settings");
+	c_menu_elements::Instance().beginchild("aimbot_sidezone_2", { 270, 285 });
+	{
+		ImGui::SetCursorPos({ 10,10 });
+		ImGui::BeginGroup();
+		{
+			const char* type[] = { "HEAD", "NECK", "BODY" };
+
+			ui->key_bind("Aim Key", Config::Instance().aiming.aimbot.aim_key);
+			ui->combo("Target Bone", &Config::Instance().aiming.aimbot.boneId, type, 3);
+			ui->checkbox("Show FOV", &Config::Instance().aiming.aimbot.showFOV);
+			ui->slider_float("FOV", &Config::Instance().aiming.aimbot.fov, 0.0f, 500.0f);
+		}
+		ImGui::EndGroup();
+	}
+	c_menu_elements::Instance().endchild();
+	ImGui::EndGroup();
+
+}
+
 void render_misc()
 {
 	c_menu_elements* ui =
@@ -463,12 +502,12 @@ void Gui::create_items()
 	{
 		switch (this->window_tab)
 		{
-			case 0: render_home(); break;
-			case 1: render_visuals(); break;
+		case 0: render_home(); break;
+		case 1: render_visuals(); break;
 			//case 3: break;
-			case 3: render_misc(); break;
-				/*case 2: render_aimings(); break;
-			case 3: render_misc(); break;
+		case 2: render_aimings(); break;
+		case 3: render_misc(); break;
+			/*case 3: render_misc(); break;
 			case 4: render_config(); break;
 			case 5: render_files(); break;
 			case 6: render_networking(); break;
@@ -554,7 +593,7 @@ void Gui::init()
 		ImGui::GetStyle().Alpha = 0;
 
 
-	if (!this->bMenuOpen){
+	if (!this->bMenuOpen) {
 		return;
 	}
 

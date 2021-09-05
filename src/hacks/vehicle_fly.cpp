@@ -47,16 +47,10 @@ void VehicleFly::Tick()
 			if (!IsValidPtr(vehicle_ptr)) return;
 
 			if (GetAsyncKeyState(0x57)) {
-				auto rot = cam::get_gameplay_cam_rot(1);
-				auto speed = (entity::get_entity_speed(vehicle) * 3.6);
+				auto rot = cam::get_gameplay_cam_rot(2);
+				entity::set_entity_max_speed(vehicle, 385);
 
-				if (speed > 10) {
-					last_fly = speed;
-				}
-
-				entity::set_entity_rotation(vehicle, rot.x, rot.y, rot.z, 1, true);
-
-				if (speed < 10) vehicle::set_vehicle_forward_speed(vehicle, last_fly);
+				entity::set_entity_heading(vehicle, rot.z);
 				entity::apply_force_to_entity(vehicle, 1, entity::get_entity_forward_x(vehicle), entity::get_entity_forward_y(vehicle), entity::get_entity_forward_vector(vehicle).z, 0, 0, 0, 1, 0, 1, 1, 1, 1);
 			}
 

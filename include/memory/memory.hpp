@@ -28,6 +28,7 @@ public:
 	IDXGISwapChain* ptr_gta_swapchain = nullptr;
 	CWorldFactory* ptr_gta_world_factory = nullptr;
 	CViewPort* ptr_gta_viewport = nullptr;
+	uintptr_t ptr_gta_camera = 0;
 	world_to_screen_t ptr_gta_world_to_screen = nullptr;
 	get_bone_position_t ptr_gta_get_bone_position = nullptr;
 	script_thread_tick_t ptr_gta_script_thread_tick = nullptr;

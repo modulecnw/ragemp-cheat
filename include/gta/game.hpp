@@ -869,10 +869,11 @@ enum WeaponHashes {
 typedef struct
 {
 	int Result;
-	BOOL DidHitAnything;
+	bool DidHitAnything;
 	bool DidHitEntity;
-	DWORD HitEntity;
-	Vector3 HitCoords;
+	int32_t HitEntity;
+	PVector3 HitCoords;
+	PVector3 HitNormal;
 } RaycastResult;
 
 enum IntersectOptions {

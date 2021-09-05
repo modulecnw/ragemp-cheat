@@ -63,6 +63,16 @@ void VisualsPlayer::Tick()
 {
 	if (!Config::Instance().visuals.player.enabled) return;
 
+	if (Config::Instance().vehicle.want_steal) {
+		utils::render::draw_text(15, 40, "Stealer switch enabled");
+	}
+
+	if (Config::Instance().vehicle.request_stealed_vehicle.stealed_vehicle != 0) {
+		Vector2 stealed_veh = functions::world_to_screen_vec(Config::Instance().vehicle.request_stealed_vehicle.stealed_pos);
+		std::string str = std::string("Request ") + std::string(Config::Instance().vehicle.request_stealed_vehicle.stealed_vehicle);
+		utils::render::draw_text(stealed_veh.x - (ImGui::CalcTextSize(str.c_str()).x / 2), stealed_veh.y - 5, str.c_str(), 14, 255, 20, 20);
+	}
+
 	for (int i = 0; i < 255; i++) {
 		auto* nPed = &Replayinterface::Instance().peds[i];
 		if (nPed == NULL) continue;

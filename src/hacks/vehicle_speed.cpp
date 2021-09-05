@@ -39,8 +39,6 @@ void VehicleSpeed::Tick()
 		controls::disable_control_action(27, 75, true);
 
 		if (vehicle) {
-			vehicle::set_vehicle_fixed(vehicle);
-
 			if (functions::get_local() == nullptr) return;
 
 			auto vehicle_ptr = functions::get_local()->vehicle();
@@ -50,10 +48,6 @@ void VehicleSpeed::Tick()
 				auto rot = cam::get_gameplay_cam_rot(2);
 				auto pos = entity::get_entity_coords(vehicle, true);
 				auto speed = (entity::get_entity_speed(vehicle) * 3.6);
-
-				if (speed > 10) {
-					last_speed = speed;
-				}
 
 				if (Config::Instance().vehicle.speed.set_rotation)
 					entity::set_entity_heading(vehicle, rot.z);
@@ -67,8 +61,8 @@ void VehicleSpeed::Tick()
 					}
 				}
 
-				if (speed < 280)
-					entity::apply_force_to_entity(vehicle, 1, cam.x, cam.y, cam.z, 0, 0, 0, 1, 0, 1, 1, 1, 1);
+				entity::set_entity_max_speed(vehicle, 385);
+				entity::apply_force_to_entity(vehicle, 1, cam.x, cam.y, cam.z, 0, 0, 0, 1, 0, 1, 1, 1, 1);
 			}
 
 			if (GetAsyncKeyState(VK_SPACE)) {
