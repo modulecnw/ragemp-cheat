@@ -8,6 +8,7 @@
 
 /* FONTS */
 #include "fonts/font_itcavantgarde.hpp"
+#include <imgui/imgui_tricks.hpp>
 
 LRESULT call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w, LPARAM param_l) {
 	return Wndproc::Instance().call_wndproc(hwnd, message_u, param_w, param_l);
@@ -57,7 +58,7 @@ void Renderer::Render(IDXGISwapChain* this_swapchain_pointer, unsigned int sync_
 	}
 
 	static uintptr_t pixel_refresh_clock = 0;
-	if (GetTickCount64() - pixel_refresh_clock > 1000)
+	if (GetTickCount64() - pixel_refresh_clock > 4000)
 	{
 		RECT rect;
 		GetClientRect(Nemo::Instance().hWindow, &rect);
@@ -95,9 +96,11 @@ void Renderer::Render(IDXGISwapChain* this_swapchain_pointer, unsigned int sync_
 
 	if (Memory::Instance().ptr_gta_world_factory != nullptr) {
 		// client render
+		ImTricks::NotifyManager::HandleNotifies(ImGui::GetOverlayDrawList());
+
 		Client::Instance().Render();
 	}
-	
+
 
 	ImGui::End();
 	ImGui::PopStyleVar(3);

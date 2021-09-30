@@ -60,6 +60,12 @@ namespace utils
 				ImGui::GetOverlayDrawList()->AddCircleFilled({ x, y }, radius, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255 }));
 		};
 
+		static auto draw_circle = [](float x, float y, float radius, float r = 255, float g = 255, float b = 255, float a = 255)
+		{
+			if (isInScreen({ x, y }, { x + radius, y + radius }))
+				ImGui::GetOverlayDrawList()->AddCircle({ x, y }, radius, ImGui::GetColorU32({ r / 255, g / 255, b / 255, a / 255 }));
+		};
+
 		static auto draw_rect = [](float x, float y, float x2, float y2, float r, float g, float b, float a, float rounding = 0.0f)
 		{
 			if (isInScreen({ x, y }, { x2, y2 }))

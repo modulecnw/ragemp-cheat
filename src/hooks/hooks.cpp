@@ -73,9 +73,6 @@ void on_entity_fire(native::nsdk::NativeContext& context)
 		}
 	}
 
-	Log::Info("asd", last_pos.x, last_pos.y, last_pos.z);
-
-
 	reinterpret_cast<decltype(&on_entity_fire)>(Hooks::Instance().original_entity_set_fire)(context);
 }
 

@@ -5,6 +5,7 @@
 #include "utils.hpp"
 #include "config.hpp"
 #include "functions.hpp"
+#include <gta/tick.hpp>
 
 std::string Aimbot::getCategory()
 {
@@ -42,9 +43,12 @@ void getBestTarget(CPlayerAngles* cam) {
 	}
 }
 
+
 void Aimbot::Tick()
 {
 	if (!Config::Instance().aiming.aimbot.enabled) return;
+	utils::render::draw_circle(Nemo::Instance().vScreen.x / 2, Nemo::Instance().vScreen.y / 2, Config::Instance().aiming.aimbot.fov, 255, 255, 255, 200);
+
 	try {
 		if (GetAsyncKeyState(Config::Instance().aiming.aimbot.aim_key) & 0x8000) {
 

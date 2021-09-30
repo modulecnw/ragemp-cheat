@@ -6,13 +6,12 @@
 #include "gta/tick.hpp"
 #include "gta/natives/database.hpp"
 #include "hooks/hooks.hpp"
+#include <imgui/imgui_tricks.hpp>
 
 // elements ui
 //const char* player_esp_box[] = { ("None"), ("2D"), ("3D") };
 //const char* player_esp_health_type[] = { ("HP-Bar Right"), ("HP-Bar Top"), ("Percent"), ("Value") };
 //const char* visual_font_type[] = { ("Text"), ("Icon") };
-
-#define run_as_native(x) tick::thread_invoker::queue([=] { x; } );
 
 void Gui::create_styles()
 {
@@ -237,6 +236,9 @@ void Gui::create_tabs()
 	c_menu_elements::Instance().endchild();
 }
 
+bool enable_animation = false;
+bool enable_animation2 = false;
+
 void render_home() {
 	c_menu_elements* ui =
 		&c_menu_elements::Instance();
@@ -251,6 +253,18 @@ void render_home() {
 				ImGui::Text(_xor_("Welcome to nemo:V").c_str());
 				ImGui::Text(_xor_("Make sure that you own a valid license for this cheat.").c_str());
 				ImGui::Text(_xor_("Otherwise you may get flagged by anti-cheat on big servers.").c_str());
+				ui->checkbox(_xor_("Show Animation"), &enable_animation);
+				ui->checkbox(_xor_("Show Animation2"), &enable_animation2);
+
+				ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+				ImVec2 p = ImVec2(100, 200);
+				ImVec2 p2 = ImVec2(100, 300);
+
+				int trickInt = ImTricks::Animations::FastIntLerp("trickInt", enable_animation, 0, 255, 15);
+				int trickInt2 = ImTricks::Animations::FastIntLerp("trickInt2", enable_animation2, 0, 255, 15);
+				draw_list->AddRectFilled(p, p + ImVec2(30, 30), ImColor(255, 255, 255, trickInt));
+				draw_list->AddRectFilled(p2, p2 + ImVec2(30, 30), ImColor(255, 255, 255, trickInt2));
 			}
 			ImGui::EndGroup();
 		}

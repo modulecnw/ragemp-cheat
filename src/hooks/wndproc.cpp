@@ -10,7 +10,7 @@ LRESULT Wndproc::call_wndproc(HWND hwnd, unsigned int message_u, WPARAM param_w,
 {
 	if (message_u == WM_KEYUP)
 	{
-		if (param_w == VK_F9)
+		if (param_w == VK_DELETE)
 		{
 			Gui::Instance().bMenuOpen ^= 1;
 		}

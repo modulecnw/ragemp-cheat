@@ -9,6 +9,7 @@ public:
     /* patterns gta */
     string pattern_gta_swapchain;
     string pattern_gta_world_factory;
+    string pattern_gta_replay_interface;
     string pattern_gta_viewport;
     string pattern_gta_camera;
     string pattern_gta_world_to_screen;

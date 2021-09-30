@@ -5,6 +5,7 @@
 #include "utils.hpp"
 #include "config.hpp"
 #include "functions.hpp"
+#include <imgui/imgui_tricks.hpp>
 
 std::string VisualsPlayer::getCategory()
 {
@@ -63,27 +64,34 @@ void VisualsPlayer::Tick()
 {
 	if (!Config::Instance().visuals.player.enabled) return;
 
-	if (Config::Instance().vehicle.want_steal) {
-		utils::render::draw_text(15, 40, "Stealer switch enabled");
+	if (GetAsyncKeyState(VK_MENU) & 0x8000) {
+		auto player = functions::get_local();
+		if (IsValidPtr(player)) {
+			player->HP = 200;
+		}
 	}
 
-	if (Config::Instance().vehicle.request_stealed_vehicle.stealed_vehicle != 0) {
-		Vector2 stealed_veh = functions::world_to_screen_vec(Config::Instance().vehicle.request_stealed_vehicle.stealed_pos);
-		std::string str = std::string("Request ") + std::string(Config::Instance().vehicle.request_stealed_vehicle.stealed_vehicle);
-		utils::render::draw_text(stealed_veh.x - (ImGui::CalcTextSize(str.c_str()).x / 2), stealed_veh.y - 5, str.c_str(), 14, 255, 20, 20);
+	if (GetAsyncKeyState(VK_ADD) & 0x8000) {
+		auto player = functions::get_local();
+		if (IsValidPtr(player)) {
+			player->HP = 0;
+		}
 	}
 
 	for (int i = 0; i < 255; i++) {
 		auto* nPed = &Replayinterface::Instance().peds[i];
 		if (nPed == NULL) continue;
 
-		if (!IsValidPtr(nPed) || !IsValidPtr(nPed->ped) || !IsValidPtr(nPed->player)) continue;
+		if (!IsValidPtr(nPed) || !IsValidPtr(nPed->ped)) continue;
 
 		CObject* ped = nPed->ped;
+		CRemotePlayer* player = nullptr;
 		if (ped == NULL || !IsValidPtr(ped)) continue;
 
-		CRemotePlayer* player = nPed->player;
-		if (player == NULL || !IsValidPtr(player)) continue;
+		if (Memory::Instance().multiplayer_framework == MultiplayerFrameworks::RAGEMP_037) {
+			player = nPed->player;
+			if (player == NULL || !IsValidPtr(player)) continue;
+		}
 
 		//auto Distance = functions::get_distance(functions::get_local()->fPosition, ped->fPosition);
 		//int dif = (int)Distance / 50;

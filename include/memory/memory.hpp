@@ -27,6 +27,7 @@ public:
 
 	IDXGISwapChain* ptr_gta_swapchain = nullptr;
 	CWorldFactory* ptr_gta_world_factory = nullptr;
+	CReplayInterface* ptr_gta_replay_interface = nullptr;
 	CViewPort* ptr_gta_viewport = nullptr;
 	uintptr_t ptr_gta_camera = 0;
 	world_to_screen_t ptr_gta_world_to_screen = nullptr;
