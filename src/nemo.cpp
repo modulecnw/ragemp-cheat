@@ -3,15 +3,20 @@
 #include "memory/patterns.hpp"
 #include "hooks/hooks.hpp"
 #include "hooks/renderer.hpp"
+#include "handlers/key_handler.hpp"
 #include <utils.hpp>
 
 void Nemo::Run(HMODULE hModule)
 {
 	this->hModule = hModule;
-
+	
 	Patterns::Instance().Initialize();
 	Memory::Instance().Initialize();
 	Hooks::Instance().Initialize();
+	
+	KeyHandler::Instance().add_keybind(KeyHandler::key_binding(VK_BACK, [] {
+		Log::Debug(_xor_("KeyHandler Test"));
+	}, true));
 
 	Log::Info(_xor_("nemo:V RAGEMP started."));
 }
