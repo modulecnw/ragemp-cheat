@@ -7,9 +7,6 @@ set(PROJECT_NAME NEMO_RAGEMP)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DALT_CLIENT)
-add_definitions(-DALT_CLIENT_API)
-
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "include/*.h" "include/*.hpp" "include/*.cpp")
 
 macro(GroupSources curdir groupindex)
